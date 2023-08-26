@@ -1,0 +1,210 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* The container */
+.container {
+	display: flex;
+}
+
+/* The sidebar */
+.sidebar {
+	width: 25%;
+	height: 100vh;
+	padding: 40px 0px;
+	background-color: #b2b98d;
+}
+
+/* The filter */
+.filter {
+	margin-top: 30px;
+	padding: 30px 40px;
+}
+
+/* margin checkbox area */
+.filter h3 {
+	margin-bottom: 40px;
+}
+
+/* button select all & Search */
+.btn-group .btn1 {
+	font-size: 20px;
+	background-color: rgb(255, 255, 255);
+	cursor: pointer;
+}
+
+/* button clear all */
+.btn-group .btn2 {
+	font-size: 20px;
+	background-color: rgb(255, 255, 255);
+	cursor: pointer;
+	margin-right: 0px;
+	margin-left: 180px;
+}
+
+/* button design */
+.btn1,
+.btn2 {
+	--c: #229091;
+	--_g: linear-gradient(var(--c) 0 0) no-repeat;
+	background:
+		var(--_g) calc(var(--_p, 0%) - 100%) 0%,
+		var(--_g) calc(200% - var(--_p, 0%)) 0%,
+		var(--_g) calc(var(--_p, 0%) - 100%) 100%,
+		var(--_g) calc(200% - var(--_p, 0%)) 100%;
+	background-size: 50.5% calc(var(--_p, 0%)/2 + .5%);
+	outline-offset: .1em;
+	transition: background-size .4s, background-position 0s .4s;
+}
+
+.btn1:hover,
+.btn2:hover {
+	--_p: 100%;
+	transition: background-position .4s, background-size 0s;
+}
+
+.btn1:active,
+.btn2:active {
+	box-shadow: 0 0 9e9q inset #0009;
+	background-color: var(--c);
+	color: #fff;
+}
+
+/* The checkbox */
+.checkbox {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-family: 'Times New Roman';
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox:hover input~.checkmark {
+	background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox input:checked~.checkmark {
+	background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox input:checked~.checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.contant {
+	height: 100%;
+	width: 75%;
+	position: absolute;
+	right: 0;
+	background-color: #bdcbb3;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 15vh;
+	border-bottom: 1px solid #ff0000;
+	color: #ffffff;
+}
+
+.header p {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.heading {
+	max-width: 968px;
+	margin-left: 30px;
+	margin-right: 10px;
+	font-size: 1.2rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	border-bottom: 1px solid var(--main-color);
+}
+
+.movies-container {
+	max-width: 1200px;
+	margin-right: 0px;
+	margin-left: 130px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, auto));
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+.box .box-img {
+	width: 100%;
+	height: 270px;
+	cursor: pointer;
+}
+
+.box .box-img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.box .box-img img:hover {
+	transform: translateY(-10px);
+	transition: 0.2s all linear;
+}
+
+.box h3 {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.box span {
+	font-size: 14px;
+}
