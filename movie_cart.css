@@ -1,0 +1,41 @@
+.movie-name {
+    font-weight: 700;
+    text-decoration: underline;
+    }
+    
+    .movie-price,
+    .cart_item_price {
+    font-style: oblique;
+    font-family: cursive;
+    }
+    
+    .movie-img {
+    max-width: 140px;
+    margin: 0 auto;
+    }
+    
+    .card {
+    border: 1px dashed grey;
+    
+    
+    }
+    
+    .btn:disabled {
+    opacity: 0.5;
+    }
+    
+    h4 {
+    font-family: cursive;
+    }
+    
+    .cart_item_name {
+    font-weight: 700;
+    }
+    
+    #badge-danger{
+        font-size: 25px;
+        font-style: normal;
+        background-color: #05361f;
+        text-align: center;
+        color: #fff;
+        }
