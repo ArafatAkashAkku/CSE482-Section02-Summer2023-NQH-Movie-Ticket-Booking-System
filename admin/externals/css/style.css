@@ -1,0 +1,65 @@
+/* css reset start  */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    text-transform: none;
+    user-select: none;
+}
+
+/* css reset start  */
+
+/* html body start  */
+
+html{
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+/* html body end */
+
+.error-img{
+    background-image: url(../images/loader-gif.gif)!important;
+    background-position: center!important;
+    background-repeat: no-repeat!important;
+    background-size: auto!important;
+}
+
+.form-control:focus {
+    border-color: #198754 !important;
+    box-shadow: inset 0 1px 1px #198754, 0 0 8px #198754 !important;
+}
+
+.btn-width {
+    width: 100% !important;
+}
+
+/* custom scrollbar section start */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background-clip: content-box;
+    background-color: #198754;
+    border-radius: 4px;
+    border: 1px solid #198754;
+}
+
+/* custom scrollbar section end */
+
+@media screen and (max-width:770px) {
+    .swiper-button-next,
+    .swiper-button-prev{
+        display: none!important;
+    }
+
+}
