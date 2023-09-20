@@ -1,3 +1,8 @@
+<?php
+require_once 'config.php';
+include 'dbConnect.php';
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 

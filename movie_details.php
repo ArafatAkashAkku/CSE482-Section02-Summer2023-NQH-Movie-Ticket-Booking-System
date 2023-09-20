@@ -1,3 +1,63 @@
+<?php
+require_once 'config.php';
+include 'dbConnect.php';
+session_start();
+
+$id = "";
+if (isset($_GET["id"])) {
+    $id = $_GET["id"];
+}
+
+
+
+if (isset($_POST['item']) && $_POST['item'] != "") {
+    $item = $_POST['item'];
+    $result = mysqli_query($con, "SELECT * FROM `all_movie_info` WHERE `id`='$item'");
+    $row = mysqli_fetch_assoc($result);
+    $name = $row['name'];
+    $rating = $row['rating'];
+    $item = $row['id'];
+    $image = $row['movie_image'];
+    $id = $row['id'];
+
+    $cartArray = array(
+        $item => array(
+            'name' => $name,
+            'rating' => $rating,
+            'quantity' => 1,
+            'price' => 100,
+            'item' => $item,
+            'image' => $image,
+            'id' => $id
+        )
+    );
+
+    if (empty($_SESSION["shopping_cart"])) {
+        $_SESSION["shopping_cart"] = $cartArray;
+        echo "
+        <script>
+        alert('Ticket is added to your cart!');
+        </script>
+        ";
+    } else {
+        $array_keys = array_keys($_SESSION["shopping_cart"]);
+        if (in_array($item, $array_keys)) {
+            echo "
+            <script>
+            alert('Ticket is already added to your cart!');
+            </script>
+            ";
+        } else {
+            $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
+            echo "
+        <script>
+        alert('Ticket is added to your cart!');
+        </script>
+        ";
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,83 +88,84 @@
 
         <div class="px-2 py-3">
             <h1 class="text-center">Movie Details</h1>
+            <?php
+            $ret = mysqli_query($con, "select * from all_movie_info where id='$id'");
+            $rowitems = mysqli_fetch_array($ret, MYSQLI_ASSOC);
+            ?>
             <div class="row gap-2 d-flex align-items-center justify-content-center">
                 <div class="col-12 col-sm-5">
-                    <img src="images/avenger.jpg" class="img-fluid mb-3 bg-light error-img" loading="lazy" alt="">
+                    <img src="images/shows/<?php
+                                            echo ($rowitems['id']);
+                                            ?>/<?php
+                                                echo ($rowitems['movie_image']);
+                                                ?>" style="width:100vw" class="img-fluid mb-3 bg-light error-img" loading="lazy" alt="Movie">
                 </div>
 
                 <div class="col-12 col-sm-5">
-                    <h2>Title: Avengers</h2>
-                    <h3>Released Date: MARCH 13, 2020</h3>
-                    <p>Length: 1h 50m</p>
-                    <p>Genre: Action, Fantasy</p>
-                    <p>IMDb: 5.7/10</p>
-                    <button class="btn btn-width btn-outline-success bg-success text-light">Book Now</button>``
+                    <h2>Title:&nbsp;<?php
+                                    echo ($rowitems["name"]);
+                                    ?></h2>
+                    <h3>Released Date:&nbsp;<?php
+                                            echo ($rowitems["release"]);
+                                            ?></h3>
+                    <p>Length:&nbsp;<?php
+                                    echo ($rowitems["runtime"]);
+                                    ?></p>
+                    <p>Genre:&nbsp;
+                        <?php
+                        if ($rowitems["genre"] == 1) {
+                            echo "Advnenture";
+                        } else if ($rowitems["genre"] == 2) {
+                            echo "Comedy";
+                        } else if ($rowitems["genre"] == 3) {
+                            echo "Drama";
+                        } else if ($rowitems["genre"] == 4) {
+                            echo "Thriller";
+                        } else if ($rowitems["genre"] == 5) {
+                            echo "Action";
+                        } else if ($rowitems["genre"] == 6) {
+                            echo "Animation";
+                        } else {
+                            echo "No Genre";
+                        }
+                        ?></p>
+                    <p>IMDb:&nbsp;<?php
+                                    echo ($rowitems["rating"]);
+                                    ?>/10</p>
+                    <form action="" method="post">
+                        <input type="hidden" name="item" value="<?php
+                                                                echo htmlentities($rowitems["id"]);
+                                                                ?>">
+                        <button class="btn btn-width btn-outline-success bg-success text-light" type="submit">Book Now</button>
+                    </form>
+
                 </div>
 
                 <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                     <h2>Watch Trailer</h2>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/6ZfuNTqbHE8?si=OpNQutUpwgXwf4i7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <?php
+                    echo ($rowitems["trailer"]);
+                    ?>
                 </div>
 
                 <div class="col-12 text-center">
                     <h2>About Movie</h2>
-                    <p>The Avengers are a fictional team of superheroes appearing in American comic books published by Marvel Comics. The team made its debut in The Avengers #1 (cover-dated Sept. 1963), created by writer-editor Stan Lee and artist/co-plotter Jack Kirby. Labeled "Earth's Mightiest Heroes", the Avengers originally consisted of Iron Man, the Wasp, the Hulk, Thor (Marvel Comics), and Hank Pym. The original Captain America was discovered trapped in ice in issue #4, and joined the group after they revived him. The Avengers could be considered as a Lee and Kirby's renovation of a previous superhero team, All-Winners Squad, who appeared in comic books series published by Marvel Comics' predecessor Timely Comics. A rotating roster became a hallmark of the series, although one theme remained consistent: the Avengers fight "the foes no single superhero can withstand." The team, famous for its battle cry of "Avengers Assemble!", has featured humans, superhumans, mutants, Inhumans, deities, androids, aliens, legendary beings, and even former villains.</p>
+                    <p><?php
+                        echo ($rowitems["about"]);
+                        ?></p>
                 </div>
 
                 <div class="col-12 text-center">
                     <h2>Casting</h2>
                     <div class="d-flex flex-wrap gap-2 align-items-center justify-content-center">
-
                         <div>
                             <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
+                            <p><?php
+                                echo ($rowitems["cast"]);
+                                ?></p>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-12 text-center">
-                    <h2>Crew</h2>
-                    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-center">
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-
-                        <div>
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
 

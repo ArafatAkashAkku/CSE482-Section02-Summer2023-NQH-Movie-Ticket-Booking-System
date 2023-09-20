@@ -63,3 +63,32 @@ html{
     }
 
 }
+
+
+.filter-click {
+    display: none;
+}
+
+.scroll-card {
+    overflow: scroll;
+    height: 100vh;
+}
+
+@media screen and (max-width:767px) {
+
+    .filter-click {
+        display: block;
+    }
+
+    .filter-show {
+        position: fixed;
+        z-index: 500;
+        top: 8vh;
+        left: -50%;
+    }
+
+    .filter-show.active {
+        left: 0;
+    }
+
+}

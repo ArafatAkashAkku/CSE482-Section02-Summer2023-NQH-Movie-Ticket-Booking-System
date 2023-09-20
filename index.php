@@ -1,3 +1,58 @@
+<?php
+require_once 'config.php';
+include 'dbConnect.php';
+session_start();
+
+
+if (isset($_POST['item']) && $_POST['item'] != "") {
+    $item = $_POST['item'];
+    $result = mysqli_query($con, "SELECT * FROM `all_movie_info` WHERE `id`='$item'");
+    $row = mysqli_fetch_assoc($result);
+    $name = $row['name'];
+    $rating = $row['rating'];
+    $item = $row['id'];
+    $image = $row['movie_image'];
+    $id = $row['id'];
+
+    $cartArray = array(
+        $item => array(
+            'name' => $name,
+            'rating' => $rating,
+            'quantity' => 1,
+            'price' => 100,
+            'item' => $item,
+            'image' => $image,
+            'id' => $id
+        )
+    );
+
+    if (empty($_SESSION["shopping_cart"])) {
+        $_SESSION["shopping_cart"] = $cartArray;
+        echo "
+        <script>
+        alert('Ticket is added to your cart!');
+        </script>
+        ";
+    } else {
+        $array_keys = array_keys($_SESSION["shopping_cart"]);
+        if (in_array($item, $array_keys)) {
+            echo "
+            <script>
+            alert('Ticket is already added to your cart!');
+            </script>
+            ";
+        } else {
+            $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
+            echo "
+        <script>
+        alert('Ticket is added to your cart!');
+        </script>
+        ";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,99 +81,73 @@
     <!-- main start  -->
     <main>
         <!-- top banner section start  -->
-        <section>
-            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="images/banners/banner1.jpg" class="d-block w-100 error-image" loading="lazy" alt="Banner">
+        <section id="top-banner">
+            <div class="swiper top-banner">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="images/banners/banner1.jpg" style="width: 100vw;" class="error-img banner-img" alt="Banner">
                     </div>
-                    <div class="carousel-item">
-                        <img src="images/banners/banner2.jpg" class="d-block w-100 error-image" loading="lazy" alt="Banner">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/banners/banner1.jpg" class="d-block w-100 error-image" loading="lazy" alt="Banner">
+                    <div class="swiper-slide">
+                        <img src="images/banners/banner2.jpg" style="width: 100vw;" class="error-img banner-img" alt="Banner">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <div class="swiper-pagination"></div>
             </div>
         </section>
         <!-- top banner section end  -->
 
         <!-- now showing section start  -->
-        <section id="now-showing" class="py-3">
+        <section id="now-showing" class="py-3" style="position: relative;">
             <div class="text-center">
                 <h1>Now Showing</h1>
-                <a href="">See All</a>
-                <div class="swiper all-shows mx-4 mt-3">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="images/shows/show1.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
+                <a href="movie_search_filter.php">See All</a>
+                <div class="swiper all-shows mx-4 px-3 mt-3" style="position: static;">
+                <div class="swiper-wrapper">
+                            <?php
+                            $ret = mysqli_query($con, "select * from all_movie_info where visibility='nowshowing' order by `id` desc");
+                            while ($row = mysqli_fetch_array($ret)) {
+                            ?>
+                                <div class="swiper-slide bg-light border border-success">
+                                    <form action="" method="post">
+                                        <div class="movie-img">
+                                            <img style="width: 300px;height:350px;" src="images/shows/<?php
+                                                                        echo htmlentities($row['id']);
+                                                                        ?>/<?php
+                                                                            echo htmlentities($row['movie_image']);
+                                                                            ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                        </div>
+                                        <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
+                                                                                                                echo htmlentities($row["id"]);
+                                                                                                                ?>">
+                                            <h3><?php
+                                                echo htmlentities($row["name"]);
+                                                ?></h3>
+                                        </a>
+                                        <p>Rating: <?php
+                                                    echo htmlentities($row["rating"]);
+                                                    ?></p>
+                                        <input type="hidden" name="item" value="<?php
+                                                                                echo htmlentities($row["id"]);
+                                                                                ?>">
+                                        <button type="submit" class="btn btn-link text-decoration-none border border-success text-light px-4 py-1 rounded-pill bg-success mb-2">Buy Tickets</button>
+                                    </form>
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show3.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show1.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show3.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show1.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show3.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                    </div>
-                    <div class="swiper-button-next text-light"></div>
-                    <div class="swiper-button-prev text-light"></div>
+                    <div class="swiper-button-next text-success"></div>
+                    <div class="swiper-button-prev text-success"></div>
                 </div>
             </div>
         </section>
         <!-- now showing section end  -->
 
         <!-- review section start  -->
-        <section id="reviews" class="py-3">
+        <section id="reviews" class="py-3" style="position: relative;">
             <div class="text-center">
                 <h1>Reviews</h1>
-                <div class="swiper slider-for-review mx-4 mt-3">
+                <div class="swiper slider-for-review mx-4 mt-3" style="position: static;">
                     <div class="swiper-wrapper mb-5">
                         <div class="swiper-slide review-bg p-3">
                             <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
@@ -149,63 +178,47 @@
         <!-- review section end  -->
 
         <!-- upcoming shows section start  -->
-        <section id="upcoming-shows" class="py-3">
+        <section id="upcoming-shows" class="py-3" style="position: relative;">
             <div class="text-center">
                 <h1>Upcoming Shows</h1>
-                <a href="">See All</a>
-                <div class="swiper all-shows mx-4 mt-3">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="images/shows/show2.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
+                <a href="movie_search_filter.php">See All</a>
+                <div class="swiper all-shows mx-4 px-3 mt-3" style="position: static;">
+                <div class="swiper-wrapper">
+                            <?php
+                            $ret = mysqli_query($con, "select * from all_movie_info where visibility='upcomingshow' order by `id` desc");
+                            while ($row = mysqli_fetch_array($ret)) {
+                            ?>
+                                <div class="swiper-slide bg-light border border-success">
+                                    <form action="" method="post">
+                                        <div class="movie-img">
+                                            <img style="width: 300px;height:350px;" src="images/shows/<?php
+                                                                        echo htmlentities($row['id']);
+                                                                        ?>/<?php
+                                                                            echo htmlentities($row['movie_image']);
+                                                                            ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                        </div>
+                                        <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
+                                                                                                                echo htmlentities($row["id"]);
+                                                                                                                ?>">
+                                            <h3><?php
+                                                echo htmlentities($row["name"]);
+                                                ?></h3>
+                                        </a>
+                                        <p>Rating: <?php
+                                                    echo htmlentities($row["rating"]);
+                                                    ?></p>
+                                        <input type="hidden" name="item" value="<?php
+                                                                                echo htmlentities($row["id"]);
+                                                                                ?>">
+                                        <button type="submit" class="btn btn-link text-decoration-none border border-success text-light px-4 py-1 rounded-pill bg-success mb-2">Buy Tickets</button>
+                                    </form>
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show4.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show2.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show4.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show2.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/shows/show4.jpg " class="img-fluid mb-3 bg-light error-img" alt="movie" loading="lazy">
-                            <a class="text-dark text-decoration-none" href="movie_details.php">
-                                <h3>Movie name</h3>
-                            </a>
-                            <p>Movie Decsription</p>
-                            <button class="btn btn-link" type="submit" name="Add_To_Cart">Buy Tickets</button>
-                        </div>
-                    </div>
-                    <div class="swiper-button-next text-light"></div>
-                    <div class="swiper-button-prev text-light"></div>
+                    <div class="swiper-button-next text-success"></div>
+                    <div class="swiper-button-prev text-success"></div>
                 </div>
             </div>
         </section>
@@ -230,6 +243,19 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- internal script link -->
     <script>
+        // swipper for top banner 
+        const slideshowswiper = new Swiper(".top-banner", {
+            spaceBetween: 10,
+            centeredSlides: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            }
+        });
         // swipper for all shows 
         const allshows = new Swiper('.all-shows', {
             navigation: {

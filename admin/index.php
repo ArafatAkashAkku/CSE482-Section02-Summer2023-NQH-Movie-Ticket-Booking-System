@@ -1,3 +1,48 @@
+<?php
+session_start();
+require_once '../config.php';
+include '../dbConnect.php';
+
+if (isset($_POST['submit'])) {
+    $query = " SELECT * FROM `admin_info` WHERE `email`='$_POST[email]'";
+    $result = mysqli_query($con, $query);
+    if ($result) {
+        if (mysqli_num_rows($result) == 1) {
+            $result_fetch = mysqli_fetch_assoc($result);
+            if ($result_fetch['verified'] == 1) {
+                $_SESSION['admin_logged_in'] = true;
+                $_SESSION['email'] = $result_fetch['email'];
+                $_SESSION['id'] = $result_fetch['id'];
+                $_SESSION['fullname'] = $result_fetch['fullname'];
+                header("location:admin_dashboard.php?email=$_SESSION[email]&id=$_SESSION[id]");
+            } else {
+                echo "
+      <script>
+      alert('Email not verified);
+      window.location.href='index.php';
+      </script>
+      ";
+            }
+        } else {
+            echo "
+      <script>
+      alert('Email not registered);
+      window.location.href='index.php';
+      </script>
+      ";
+        }
+    } else {
+        echo "
+      <script>
+      alert('Can not run query');
+      window.location.href='index.php';
+      </script>
+      ";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

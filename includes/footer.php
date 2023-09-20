@@ -42,10 +42,10 @@
         <div class="d-flex flex-column flex-sm-row justify-content-between pt-4 border-top">
             <p class="text-light">© <span class="update-year"></span> Company, Inc. All rights reserved.</p>
             <ul class="list-unstyled d-flex">
-                    <li class="ms-3"><a class="text-light fs-4" href="" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a></li>
-                    <li class="ms-3"><a class="text-light fs-4" href="" target="_blank" title="Instagram"><i class="fa-brands fa-square-instagram"></i></a></li>
-                    <li class="ms-3"><a class="text-light fs-4" href="" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a></li>
-                    <li class="ms-3"><a class="text-light fs-4" href="" target="_blank" title="Youtube"><i class="fa-brands fa-youtube"></i></a></li>
+                    <li class="ms-3"><a class="text-light fs-4" href="#" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li class="ms-3"><a class="text-light fs-4" href="#" target="_blank" title="Instagram"><i class="fa-brands fa-square-instagram"></i></a></li>
+                    <li class="ms-3"><a class="text-light fs-4" href="#" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li class="ms-3"><a class="text-light fs-4" href="#" target="_blank" title="Youtube"><i class="fa-brands fa-youtube"></i></a></li>
                 </ul>
         </div>
     </footer>

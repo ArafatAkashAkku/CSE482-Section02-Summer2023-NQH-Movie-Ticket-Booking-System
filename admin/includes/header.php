@@ -5,48 +5,64 @@
     }
 </style>
 <header>
-        <nav class="navbar navbar-expand-lg bg-success navigation-header">
-            <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-success navigation-header">
+        <div class="container-fluid">
+            <?php
+            if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
+            ?>
+                <a class="navbar-brand text-light" href="admin_dashboard.php?email=<?php
+                                                                                    echo $_SESSION['email'];
+                                                                                    ?>&id=<?php echo $_SESSION['id']; ?>">MTBS</a>
+            <?php
+            } else {
+            ?>
                 <a class="navbar-brand text-light" href="index.php">MTBS</a>
-                <button class="navbar-toggler bg-light text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <?php
+            }
+            ?>
+            <button class="navbar-toggler bg-light text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <?php
+                    if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
+                    ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="about.php">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="pricing.php">Pricing</a>
+                            <a class="nav-link text-light" aria-current="page" href="admin_dashboard.php?email=<?php
+                                                                                                                echo $_SESSION['email'];
+                                                                                                                ?>&id=<?php echo $_SESSION['id']; ?>">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['email']; ?></span></a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Movies
+                                Movie Details
                             </a>
-                            <ul class="dropdown-menu bg-success">
-                                <li><a class="dropdown-item text-light bg-success" href="index.php#now-showing">Now Showing</a></li>
-                                <li><a class="dropdown-item text-light bg-success" href="index.php#upcoming-shows">Upcoming</a></li>
+                            <ul class="dropdown-menu bg-dark">
+                                <li> <a class="dropdown-item text-light bg-dark" href="movie_info.php">Movie Info</a></li>
+                                <li> <a class="dropdown-item text-light bg-dark" href="movie_info_add.php">Add Movie Info</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="cineplex.php">Cineplex</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Account Info
+                            </a>
+                            <ul class="dropdown-menu bg-dark">
+                                <li> <a class="dropdown-item text-light bg-dark" href="admin_dashboard.php?email=<?php
+                                                                                                                    echo $_SESSION['email'];
+                                                                                                                    ?>&id=<?php echo $_SESSION['id']; ?>">Change Password</a></li>
+                                <li> <a class="dropdown-item text-light bg-dark" href="logout.php">Log out</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="login.php">My Account</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="login.php">Orders</a>
-                        </li>
-                    </ul>
-                </div> -->
+                    <?php
+                    }
+                    ?>
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
-    <script>
+<script>
     const navigationBar = document.querySelector(".navigation-header");
     // windows scroll function 
     window.onscroll = () => {
