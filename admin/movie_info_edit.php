@@ -70,6 +70,14 @@ if (isset($_GET["id"])) {
                             </div>
                             <div class="form-group py-2">
                                 <div class="input-field">
+                                    <h5 class="text-muted">Item No (should be unique)</h5>
+                                    <input type="text" name="item" class="form-control px-3 py-2" value="<?php
+                                                                                                            echo htmlentities($row["item"]);
+                                                                                                            ?>">
+                                </div>
+                            </div>
+                            <div class="form-group py-2">
+                                <div class="input-field">
                                     <h5 class="text-muted">Genre</h5>
                                     <select name="genre" class="form-control px-3 py-2">
                                         <?php
@@ -207,7 +215,7 @@ if (isset($_GET["id"])) {
                     $tempname = $_FILES["newimg"]["tmp_name"];
                     move_uploaded_file($tempname, "../images/shows/$id/" . $productimage);
 
-                        $query = "UPDATE `all_movie_info` SET `name`='$_POST[name]',`genre`='$_POST[genre]',`rating`='$_POST[rating]',`runtime`='$_POST[runtime]', `about`='$_POST[about]',`cast`='$_POST[cast]', `release`='$_POST[release]', `trailer`='$_POST[trailer]', `visibility`='$_POST[visibility]', `movie_image`='$productimage' WHERE `id`='$id'";
+                        $query = "UPDATE `all_movie_info` SET `name`='$_POST[name]',`item`='$_POST[item]',`genre`='$_POST[genre]',`rating`='$_POST[rating]',`runtime`='$_POST[runtime]', `about`='$_POST[about]',`cast`='$_POST[cast]', `release`='$_POST[release]', `trailer`='$_POST[trailer]', `visibility`='$_POST[visibility]', `movie_image`='$productimage' WHERE `id`='$id'";
                         if (mysqli_query($con, $query)) {
                             echo "
                             <script>
@@ -226,7 +234,7 @@ if (isset($_GET["id"])) {
                 }else{
                     $productimage= $_POST['oldimg'];
 
-                    $query = "UPDATE `all_movie_info` SET `name`='$_POST[name]',`genre`='$_POST[genre]',`rating`='$_POST[rating]',`runtime`='$_POST[runtime]', `about`='$_POST[about]',`cast`='$_POST[cast]', `release`='$_POST[release]', `trailer`='$_POST[trailer]', `visibility`='$_POST[visibility]', `movie_image`='$productimage' WHERE `id`='$id'";
+                    $query = "UPDATE `all_movie_info` SET `name`='$_POST[name]',`item`='$_POST[item]',`genre`='$_POST[genre]',`rating`='$_POST[rating]',`runtime`='$_POST[runtime]', `about`='$_POST[about]',`cast`='$_POST[cast]', `release`='$_POST[release]', `trailer`='$_POST[trailer]', `visibility`='$_POST[visibility]', `movie_image`='$productimage' WHERE `id`='$id'";
                 if (mysqli_query($con, $query)) {
                     echo "
                         <script>

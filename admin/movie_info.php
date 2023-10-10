@@ -47,6 +47,7 @@ session_start();
                         <th scope="col" style="display: none;">ID</th>
                         <th scope="col">Image</th>
                         <th scope="col">Movie Name</th>
+                        <th scope="col">Item No</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Runtime</th>
                         <th scope="col">Release</th>
@@ -72,6 +73,9 @@ session_start();
                                 echo htmlentities($row["name"]);
                                 ?> </td>
                             <td><?php
+                                echo htmlentities($row["item"]);
+                                ?> </td>
+                            <td><?php
                                 echo htmlentities($row["rating"]);
                                 ?> </td>
                             <td><?php
@@ -84,10 +88,10 @@ session_start();
                                 echo htmlentities($row["visibility"]);
                                 ?> </td>
                             <td><a href="movie_info_edit.php?id=<?php
-                                                                    echo htmlentities($row['id']);
-                                                                    ?>" class="pe-1">Edit</a><a href="movie_info_delete.php?id=<?php
-                                                                                                                                    echo htmlentities($row['id']);
-                                                                                                                                    ?>" onclick="return checkdelete()" class="ps-1">Delete</a></td>
+                                                                echo htmlentities($row['id']);
+                                                                ?>" class="pe-1">Edit</a><a href="movie_info_delete.php?id=<?php
+                                                                                                                                echo htmlentities($row['id']);
+                                                                                                                                ?>" onclick="return checkdelete()" class="ps-1">Delete</a></td>
                         </tr>
                     <?php
                     }
@@ -99,6 +103,7 @@ session_start();
                         <th scope="col" style="display: none;">ID</th>
                         <th scope="col">Image</th>
                         <th scope="col">Movie Name</th>
+                        <th scope="col">Item No</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Runtime</th>
                         <th scope="col">Release</th>
@@ -124,7 +129,7 @@ session_start();
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- swipper js link  -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- jquery js  -->

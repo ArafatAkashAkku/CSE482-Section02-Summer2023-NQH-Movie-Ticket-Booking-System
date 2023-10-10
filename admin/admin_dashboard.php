@@ -107,11 +107,11 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
                 $query ="UPDATE `admin_info` SET `password`='$_POST[password]' WHERE `email`='$email' and `id`='$id'";
                 if (mysqli_query($con, $query)) {
                     echo "
-          <script>
-          alert('Admin info updated');
-          window.location.href='admin_dashboard.php?email=$_SESSION[email]&id=$_SESSION[id]';
-          </script>
-          ";
+                    <script>
+                    alert('Admin info updated - You need to log in');
+                    window.location.href='logout.php';
+                    </script>
+                    ";
                 } else {
                     echo "
           <script>
@@ -133,7 +133,7 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
 
     ?>
    <!-- external js link  -->
-   <link rel="stylesheet" href="externals/js/script.js">
+   <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- swipper js link  -->

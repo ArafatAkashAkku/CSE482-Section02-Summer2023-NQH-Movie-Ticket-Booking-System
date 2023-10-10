@@ -101,7 +101,7 @@ session_start();
     <!-- footer end  -->
 
     <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- swipper js link  -->

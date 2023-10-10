@@ -13,13 +13,14 @@ if (isset($_POST['submit'])) {
             if ($result_fetch['verified'] == 1) {
                 if (password_verify($_POST['password'], $result_fetch['password'])) {
                     $_SESSION['logged_in'] = true;
-                    $_SESSION['email'] = $result_fetch['email'];
-                    $_SESSION['id'] = $result_fetch['id'];
-                    $_SESSION['fullname'] = $result_fetch['fullname'];
+                    $_SESSION['user_email'] = $result_fetch['email'];
+                    $_SESSION['user_id'] = $result_fetch['id'];
+                    $_SESSION['user_fullname'] = $result_fetch['fullname'];
+                    setcookie("useremail",$result_fetch['email'],time()+(86400*30),"/");
                     header("location:index.php");
                 } else {
                     echo "<script>
-                    alert('Incorrect password);
+                    alert('Incorrect password');
                      window.location.href='login.php';
                     </script>
                        ";
@@ -30,7 +31,7 @@ if (isset($_POST['submit'])) {
                {
                 echo "
       <script>
-      alert('Email not verified check your email);
+      alert('Email not verified check your email');
       window.location.href='login.php';
       </script>
       ";
@@ -38,7 +39,7 @@ if (isset($_POST['submit'])) {
         } else {
             echo "
       <script>
-      alert('Email not registered);
+      alert('Email not registered');
       window.location.href='signup.php';
       </script>
       ";
@@ -95,7 +96,7 @@ if (isset($_POST['submit'])) {
                 <form class="p-3" action="" method="POST" autocomplete="off">
                     <div class="form-group py-2">
                         <div class="input-field">
-                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2">
+                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2" value="<?php if(isset($_COOKIE['useremail'])){ echo $_COOKIE['useremail']; }  ?>">
                         </div>
                     </div>
                     <div class="form-group py-2">
@@ -126,7 +127,7 @@ if (isset($_POST['submit'])) {
     <!-- footer end  -->
 
     <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- swipper js link  -->

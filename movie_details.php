@@ -8,15 +8,13 @@ if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-
-
 if (isset($_POST['item']) && $_POST['item'] != "") {
     $item = $_POST['item'];
     $result = mysqli_query($con, "SELECT * FROM `all_movie_info` WHERE `id`='$item'");
     $row = mysqli_fetch_assoc($result);
     $name = $row['name'];
     $rating = $row['rating'];
-    $item = $row['id'];
+    $item = $row['item'];
     $image = $row['movie_image'];
     $id = $row['id'];
 
@@ -37,6 +35,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         echo "
         <script>
         alert('Ticket is added to your cart!');
+        window.location.href='cart.php';
         </script>
         ";
     } else {
@@ -45,6 +44,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
             <script>
             alert('Ticket is already added to your cart!');
+            window.location.href='cart.php';
             </script>
             ";
         } else {
@@ -52,6 +52,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
         <script>
         alert('Ticket is added to your cart!');
+        window.location.href='cart.php';
         </script>
         ";
         }
@@ -134,7 +135,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                     ?>/10</p>
                     <form action="" method="post">
                         <input type="hidden" name="item" value="<?php
-                                                                echo htmlentities($rowitems["id"]);
+                                                                echo htmlentities($rowitems["item"]);
                                                                 ?>">
                         <button class="btn btn-width btn-outline-success bg-success text-light" type="submit">Book Now</button>
                     </form>
@@ -177,7 +178,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- footer end  -->
 
     <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- swipper js link  -->

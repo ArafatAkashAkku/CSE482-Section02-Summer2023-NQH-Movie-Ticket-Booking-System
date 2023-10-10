@@ -102,11 +102,11 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
                 $query = "UPDATE `user_info` SET `fullname`='$_POST[fullname]' WHERE `email`='$email' and `id`='$id'";
                 if (mysqli_query($con, $query)) {
                     echo "
-          <script>
-          alert('Account info updated.');
-          window.location.href='logout.php';
-          </script>
-          ";
+                <script>
+                alert('Account info updated - Please log in');
+                window.location.href='logout.php';
+                </script>
+                ";
                 } else {
                     echo "
           <script>

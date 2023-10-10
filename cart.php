@@ -100,13 +100,13 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                         ?>
                             <tr>
                                 <td><img src='images/shows/<?php
-                                                                echo ($product['id']);
-                                                                ?>/<?php echo $product["image"]; ?>' width="70" height="50" /></td>
+                                                            echo ($product['id']);
+                                                            ?>/<?php echo $product["image"]; ?>' width="70" height="50" /></td>
                                 <td><?php echo $product["name"]; ?></td>
                                 <td><?php echo $product["rating"]; ?></td>
                                 <td>
                                     <form method='post' action=''>
-                                        <input type='hidden' name='item' value="<?php echo $product["id"]; ?>" />
+                                        <input type='hidden' name='item' value="<?php echo $product["item"]; ?>" />
                                         <input type='hidden' name='action' value="change" />
                                         <select name='quantity' class='quantity' onchange="this.form.submit()">
                                             <option <?php if ($product["quantity"] == 1) echo "selected"; ?> value="1">1</option>
@@ -124,7 +124,7 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                                 </td>
                                 <td>
                                     <form method='post' action=''>
-                                        <input type='hidden' name='itemm' value="<?php echo $product["id"]; ?>" />
+                                        <input type='hidden' name='itemm' value="<?php echo $product["item"]; ?>" />
                                         <input type='hidden' name='actionn' value="changee" />
                                         <select name='price' class='price' onchange="this.form.submit()">
                                             <option <?php if ($product["price"] == 100) echo "selected"; ?> value="100">Tk 100</option>
@@ -136,7 +136,7 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                                 <td><?php echo "BDT&nbsp;" . $product["price"] * $product["quantity"]; ?></td>
                                 <td>
                                     <form method='post' action=''>
-                                        <input type='hidden' name='item' value="<?php echo $product["id"]; ?>" />
+                                        <input type='hidden' name='item' value="<?php echo $product["item"]; ?>" />
                                         <input type='hidden' name='action' value="remove" />
                                         <button type='submit' class='remove px-3 py-1 bg-danger border text-light border-warning rounded'>Remove Ticket</button>
                                     </form>
@@ -174,6 +174,58 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                 </script>";
     }
     ?>
+
+    <!-- Stripe JavaScript library -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script>
+        var buyBtn = document.getElementById('payButton');
+        var responseContainer = document.getElementById('paymentResponse');
+        // Create a Checkout Session with the selected product
+        var createCheckoutSession = function(stripe) {
+            return fetch("stripe_charge.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    checkoutSession: 1,
+                    Name: "MTBS",
+                    ID: "MTBS",
+                    Price: "<?php echo $total_price ?>",
+                    Currency: "USD",
+                }),
+            }).then(function(result) {
+                return result.json();
+            });
+        };
+
+        // Handle any errors returned from Checkout
+        var handleResult = function(result) {
+            if (result.error) {
+                responseContainer.innerHTML = '<p>' + result.error.message + '</p>';
+            }
+            buyBtn.disabled = false;
+            buyBtn.textContent = 'Proceed to Checkout';
+        };
+
+        // Specify Stripe publishable key to initialize Stripe.js
+        var stripe = Stripe('<?php echo STRIPE_PUBLISHABLE_KEY; ?>');
+
+        buyBtn.addEventListener("click", function(evt) {
+            buyBtn.disabled = true;
+            buyBtn.textContent = 'Please wait for a minute...';
+            createCheckoutSession().then(function(data) {
+                if (data.sessionId) {
+                    stripe.redirectToCheckout({
+                        sessionId: data.sessionId,
+                    }).then(handleResult);
+                } else {
+                    handleResult(data);
+                }
+            });
+        });
+    </script>
 
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>

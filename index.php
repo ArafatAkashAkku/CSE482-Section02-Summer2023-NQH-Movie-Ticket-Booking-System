@@ -3,6 +3,30 @@ require_once 'config.php';
 include 'dbConnect.php';
 session_start();
 
+if (isset($_POST['submit'])) {
+    $reviewname = $_SESSION['user_fullname'];
+    $reviewmovie = $_POST['movie'];
+    $reviewtitle = $_POST['title'];
+    $reviewreview = $_POST['review'];
+
+    $queryy = "INSERT INTO `reviews`(`name`,`movie`,`title`,`review`,`time`,`verified`)VALUES('$reviewname','$reviewmovie','$reviewtitle','$reviewreview',current_timestamp(),'0')";
+    $resultt = mysqli_query($con, $queryy);
+    if ($resultt) {
+        echo "
+        <script>
+        window.location.href='index.php#reviews';
+        alert('Review Message Sent Successfully');
+        </script>
+        ";
+    } else {
+        echo "
+        <script>
+        window.location.href='index.php#honest-review';
+        alert('Review Message Sent Failed');
+        </script>
+        ";
+    }
+}
 
 if (isset($_POST['item']) && $_POST['item'] != "") {
     $item = $_POST['item'];
@@ -10,7 +34,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     $row = mysqli_fetch_assoc($result);
     $name = $row['name'];
     $rating = $row['rating'];
-    $item = $row['id'];
+    $item = $row['item'];
     $image = $row['movie_image'];
     $id = $row['id'];
 
@@ -31,6 +55,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         echo "
         <script>
         alert('Ticket is added to your cart!');
+        window.location.href='cart.php';
         </script>
         ";
     } else {
@@ -39,6 +64,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
             <script>
             alert('Ticket is already added to your cart!');
+            window.location.href='cart.php';
             </script>
             ";
         } else {
@@ -46,6 +72,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
         <script>
         alert('Ticket is added to your cart!');
+        window.location.href='cart.php';
         </script>
         ";
         }
@@ -102,40 +129,40 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                 <h1>Now Showing</h1>
                 <a href="movie_search_filter.php">See All</a>
                 <div class="swiper all-shows mx-4 px-3 mt-3" style="position: static;">
-                <div class="swiper-wrapper">
-                            <?php
-                            $ret = mysqli_query($con, "select * from all_movie_info where visibility='nowshowing' order by `id` desc");
-                            while ($row = mysqli_fetch_array($ret)) {
-                            ?>
-                                <div class="swiper-slide bg-light border border-success">
-                                    <form action="" method="post">
-                                        <div class="movie-img">
-                                            <img style="width: 300px;height:350px;" src="images/shows/<?php
-                                                                        echo htmlentities($row['id']);
-                                                                        ?>/<?php
-                                                                            echo htmlentities($row['movie_image']);
-                                                                            ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
-                                        </div>
-                                        <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
-                                                                                                                echo htmlentities($row["id"]);
-                                                                                                                ?>">
-                                            <h3><?php
-                                                echo htmlentities($row["name"]);
-                                                ?></h3>
-                                        </a>
-                                        <p>Rating: <?php
-                                                    echo htmlentities($row["rating"]);
-                                                    ?></p>
-                                        <input type="hidden" name="item" value="<?php
-                                                                                echo htmlentities($row["id"]);
-                                                                                ?>">
-                                        <button type="submit" class="btn btn-link text-decoration-none border border-success text-light px-4 py-1 rounded-pill bg-success mb-2">Buy Tickets</button>
-                                    </form>
-                                </div>
-                            <?php
-                            }
-                            ?>
-                        </div>
+                    <div class="swiper-wrapper">
+                        <?php
+                        $ret = mysqli_query($con, "select * from all_movie_info where visibility='nowshowing' order by `id` desc");
+                        while ($row = mysqli_fetch_array($ret)) {
+                        ?>
+                            <div class="swiper-slide bg-light border border-success">
+                                <form action="" method="post">
+                                    <div class="movie-img">
+                                        <img style="width: 300px;height:350px;" src="images/shows/<?php
+                                                                                                    echo htmlentities($row['id']);
+                                                                                                    ?>/<?php
+                                                                                                        echo htmlentities($row['movie_image']);
+                                                                                                        ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                    </div>
+                                    <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
+                                                                                                            echo htmlentities($row["id"]);
+                                                                                                            ?>">
+                                        <h3><?php
+                                            echo htmlentities($row["name"]);
+                                            ?></h3>
+                                    </a>
+                                    <p>Rating: <?php
+                                                echo htmlentities($row["rating"]);
+                                                ?></p>
+                                    <input type="hidden" name="item" value="<?php
+                                                                            echo htmlentities($row["item"]);
+                                                                            ?>">
+                                    <button type="submit" class="btn btn-link text-decoration-none border border-success text-light px-4 py-1 rounded-pill bg-success mb-2">Buy Tickets</button>
+                                </form>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                     <div class="swiper-button-next text-success"></div>
                     <div class="swiper-button-prev text-success"></div>
                 </div>
@@ -147,28 +174,46 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <section id="reviews" class="py-3" style="position: relative;">
             <div class="text-center">
                 <h1>Reviews</h1>
-                <div class="swiper slider-for-review mx-4 mt-3" style="position: static;">
+                <div class="swiper slider-for-review px-3 mx-4 mt-3" style="position: static;">
                     <div class="swiper-wrapper mb-5">
-                        <div class="swiper-slide review-bg p-3">
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam nulla ex quod alias necessitatibus vel consequuntur debitis mollitia saepe quos.</h5>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-                        <div class="swiper-slide review-bg p-3">
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam nulla ex quod alias necessitatibus vel consequuntur debitis mollitia saepe quos.</h5>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-                        <div class="swiper-slide review-bg p-3">
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam nulla ex quod alias necessitatibus vel consequuntur debitis mollitia saepe quos.</h5>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
-                        <div class="swiper-slide review-bg p-3">
-                            <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
-                            <h5>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam nulla ex quod alias necessitatibus vel consequuntur debitis mollitia saepe quos.</h5>
-                            <p>Lorem, ipsum dolor.</p>
-                        </div>
+                        <?php
+                        $ret = mysqli_query($con, "select * from reviews where verified='1' order by `id` desc");
+                        while ($row = mysqli_fetch_array($ret)) {
+                        ?>
+                            <div class="swiper-slide review-bg px-3 text-start border border-success">
+                                <?php
+                                $queryy = "select * from all_movie_info";
+                                $rett = mysqli_query($con, $queryy);
+                                while ($roww = mysqli_fetch_array($rett)) {
+                                    if ($row['movie'] === $roww['id']) {
+                                ?>
+                                        <div style="display:flex;justify-content:center;align-items:center;">
+                                            <img style="width:150px;height:150px;" src="images/shows/<?php echo htmlentities($roww['id']); ?>/<?php echo htmlentities($roww['movie_image']); ?>" alt="Movie">
+                                        </div>
+                                        <h4 class="text-center text-muted"><?php echo htmlentities($roww["name"]); ?></h4>
+                                <?php
+                                    }
+                                }
+                                ?>
+                                <h3 style="font-weight: bold;"><?php echo htmlentities(substr($row["title"], 0, 40)) . "........"; ?></h3>
+                                <p><?php echo htmlentities(substr($row["review"], 0, 300)) . "........"; ?></p>
+                                <div class="d-flex justify-content-end align-item-center my-3">
+                                    <div>
+                                        <a href="movie_review.php?id=<?php echo htmlentities($row['id']); ?>">Read More...</a>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-item-center">
+                                    <div>
+                                        <i class="fa-solid fa-user text-success border rounded-circle bg-white p-1"></i><span class="ms-2"><?php echo htmlentities($row['name']); ?></span>
+                                    </div>
+                                    <div>
+                                        <p><?php echo htmlentities($row['time']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <div class="swiper-button-next text-success"></div>
                     <div class="swiper-button-prev text-success"></div>
@@ -183,46 +228,96 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                 <h1>Upcoming Shows</h1>
                 <a href="movie_search_filter.php">See All</a>
                 <div class="swiper all-shows mx-4 px-3 mt-3" style="position: static;">
-                <div class="swiper-wrapper">
-                            <?php
-                            $ret = mysqli_query($con, "select * from all_movie_info where visibility='upcomingshow' order by `id` desc");
-                            while ($row = mysqli_fetch_array($ret)) {
-                            ?>
-                                <div class="swiper-slide bg-light border border-success">
-                                    <form action="" method="post">
-                                        <div class="movie-img">
-                                            <img style="width: 300px;height:350px;" src="images/shows/<?php
-                                                                        echo htmlentities($row['id']);
-                                                                        ?>/<?php
-                                                                            echo htmlentities($row['movie_image']);
-                                                                            ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
-                                        </div>
-                                        <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
-                                                                                                                echo htmlentities($row["id"]);
-                                                                                                                ?>">
-                                            <h3><?php
-                                                echo htmlentities($row["name"]);
-                                                ?></h3>
-                                        </a>
-                                        <p>Rating: <?php
-                                                    echo htmlentities($row["rating"]);
-                                                    ?></p>
-                                        <input type="hidden" name="item" value="<?php
-                                                                                echo htmlentities($row["id"]);
-                                                                                ?>">
-                                        <button type="submit" class="btn btn-link text-decoration-none border border-success text-light px-4 py-1 rounded-pill bg-success mb-2">Buy Tickets</button>
-                                    </form>
-                                </div>
-                            <?php
-                            }
-                            ?>
-                        </div>
+                    <div class="swiper-wrapper">
+                        <?php
+                        $ret = mysqli_query($con, "select * from all_movie_info where visibility='upcomingshow' order by `id` desc");
+                        while ($row = mysqli_fetch_array($ret)) {
+                        ?>
+                            <div class="swiper-slide bg-light border border-success">
+                                <form action="" method="post">
+                                    <div class="movie-img">
+                                        <img style="width: 300px;height:350px;" src="images/shows/<?php
+                                                                                                    echo htmlentities($row['id']);
+                                                                                                    ?>/<?php
+                                                                                                        echo htmlentities($row['movie_image']);
+                                                                                                        ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                    </div>
+                                    <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
+                                                                                                            echo htmlentities($row["id"]);
+                                                                                                            ?>">
+                                        <h3><?php
+                                            echo htmlentities($row["name"]);
+                                            ?></h3>
+                                    </a>
+                                    <p>Rating: <?php
+                                                echo htmlentities($row["rating"]);
+                                                ?></p>
+                                    <input type="hidden" name="item" value="<?php
+                                                                            echo htmlentities($row["item"]);
+                                                                            ?>">
+                                    <button type="submit" class="btn btn-link text-decoration-none border border-success text-light px-4 py-1 rounded-pill bg-success mb-2">Buy Tickets</button>
+                                </form>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                     <div class="swiper-button-next text-success"></div>
                     <div class="swiper-button-prev text-success"></div>
                 </div>
             </div>
         </section>
         <!-- upcoming shows section end  -->
+        <!-- honest review section start  -->
+        <?php
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
+        ?>
+            <section id="honest-review" class="py-3" style="position: relative;">
+                <div class="mx-4 px-3 mt-3">
+                    <h1 class="text-center">Submit Reviews For Movies</h1>
+                    <form action="" method="post" id="review-form">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Reviewer Name</label>
+                            <input type="text" disabled name="name" class="form-control" value="<?php echo $_SESSION['user_fullname']; ?>" id="review-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="review-movie" class="form-label">Movie</label>
+                            <select name="movie" class="form-control px-3 py-2" required>
+                                <option selected>Select Movie</option>
+                                <?php
+                                $ret = mysqli_query($con, "select * from all_movie_info");
+                                while ($row = mysqli_fetch_array($ret)) {
+                                ?>
+                                    <option value="<?php echo htmlentities($row['id']); ?>"><?php
+                                                                                            echo htmlentities($row["name"]);
+                                                                                            ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="review-title" class="form-label">Reviewer Title</label>
+                            <input type="text" name="title" class="form-control" required id="exampleFormControlInput1" placeholder="Enter a title for review">
+                        </div>
+                        <div class="mb-3">
+                            <label for="review-message" class="form-label">Review</label>
+                            <textarea name="review" class="form-control" required id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3 text-center">
+                            <button type="submit" name="submit" class="px-3 py-2 bg-success text-light border border-success rounded">Submit</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </section>
+        <?php
+        }
+        ?>
+
+        <!-- honest review section end  -->
 
     </main>
     <!-- main end  -->
@@ -235,12 +330,15 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- footer end  -->
 
 
-    <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- swipper js link  -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <!-- jQuery library is required. -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!-- external js link  -->
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- internal script link -->
     <script>
         // swipper for top banner 
@@ -305,11 +403,11 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                     spaceBetween: 15,
                 },
                 980: {
-                    slidesPerView: 3,
+                    slidesPerView: 2,
                     spaceBetween: 20,
                 },
                 1024: {
-                    slidesPerView: 3,
+                    slidesPerView: 2,
                     spaceBetween: 20,
                 }
             }

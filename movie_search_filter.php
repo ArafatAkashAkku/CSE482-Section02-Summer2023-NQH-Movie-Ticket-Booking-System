@@ -10,7 +10,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     $row = mysqli_fetch_assoc($result);
     $name = $row['name'];
     $rating = $row['rating'];
-    $item = $row['id'];
+    $item = $row['item'];
     $image = $row['movie_image'];
     $id = $row['id'];
 
@@ -31,6 +31,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         echo "
         <script>
         alert('Ticket is added to your cart!');
+        window.location.href='cart.php';
         </script>
         ";
     } else {
@@ -39,6 +40,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
             <script>
             alert('Ticket is already added to your cart!');
+            window.location.href='cart.php';
             </script>
             ";
         } else {
@@ -46,6 +48,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
         <script>
         alert('Ticket is added to your cart!');
+        window.location.href='cart.php';
         </script>
         ";
         }
@@ -161,7 +164,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                                         </a>
                                                         <p>Rating: <?= $proditems['rating']; ?></p>
                                                         <input type="hidden" name="item" value="<?php
-                                                                                                echo htmlentities($proditems["id"]);
+                                                                                                echo htmlentities($proditems["item"]);
                                                                                                 ?>">
                                                         <button type="submit" class="btn btn-link text-decoration-none border border-warning text-dark px-4 py-1 rounded-pill bg-warning mb-2">Buy Tickets</button>
                                                     </form>
@@ -188,7 +191,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                                     </a>
                                                     <p>Rating: <?= $proditems['rating']; ?></p>
                                                     <input type="hidden" name="item" value="<?php
-                                                                                            echo htmlentities($proditems["id"]);
+                                                                                            echo htmlentities($proditems["item"]);
                                                                                             ?>">
                                                     <button type="submit" class="btn btn-link text-decoration-none border border-warning text-dark px-4 py-1 rounded-pill bg-warning mb-2">Buy Ticket</button>
                                                 </form>
@@ -217,7 +220,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
-    <!-- <script src="js/index.js"></script> -->
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- swipper js link  -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>

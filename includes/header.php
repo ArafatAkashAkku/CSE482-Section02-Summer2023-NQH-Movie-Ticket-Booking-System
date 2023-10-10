@@ -4,7 +4,7 @@
         z-index: 1000;
     }
 </style>
-<header>
+<header style="position: relative;">
     <nav class="navbar navbar-expand-lg bg-success navigation-header">
         <div class="container-fluid">
             <a class="navbar-brand text-light" href="index.php">MTBS</a>
@@ -17,7 +17,7 @@
                     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="index.php">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['fullname']; ?></span></a>
+                            <a class="nav-link text-light" aria-current="page" href="index.php">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['user_fullname']; ?></span></a>
                         </li>
 
                     <?php
@@ -52,8 +52,8 @@
                     ?>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="account.php?email=<?php
-                                                                                    echo $_SESSION['email'];
-                                                                                    ?>&id=<?php echo $_SESSION['id']; ?>">My Account</a>
+                                                                                    echo $_SESSION['user_email'];
+                                                                                    ?>&id=<?php echo $_SESSION['user_id']; ?>">My Account</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="cart.php">Cart</a>
@@ -71,12 +71,16 @@
                     }
                     ?>
                 </ul>
-                <form class="d-flex" role="search" action="search_result.php" method="GET" autocomplete="off">
-                    <input type="text" name="search" required value="<?php if (isset($_GET['search'])) {
-                                                                            echo $_GET['search'];
-                                                                        } ?>" class="form-control" placeholder="Search data">
-                    <button class="btn btn-outline-success bg-light text-success" type="submit">Search</button>
+                <form class="d-flex flex-column" role="search" action="search_result.php" method="GET" autocomplete="off">
+                    <div class="d-flex">
+                        <input type="text" id="search" name="search" required value="<?php if (isset($_GET['search'])) {
+                                                                                echo $_GET['search'];
+                                                                            } ?>" class="form-control" placeholder="Search data">
+                        <button class="btn btn-outline-success bg-light text-success" type="submit">Search</button>
+                    </div>
+                    <div class="bg-light" id="display" style="position: absolute;top: 48px;width: 21vw;right: 6px;"></div>
                 </form>
+                <!-- Suggestions will be displayed in the following div. -->
             </div>
         </div>
     </nav>

@@ -51,6 +51,12 @@ session_start();
                         </div>
                         <div class="form-group py-2">
                             <div class="input-field">
+                                <h5 class="text-muted">Item No (should be unique)</h5>
+                                <input type="text" name="item" class="form-control px-3 py-2" required>
+                            </div>
+                        </div>
+                        <div class="form-group py-2">
+                            <div class="input-field">
                                 <h5 class="text-muted">Genre</h5>
                                 <select name="genre" class="form-control px-3 py-2" required>
                                     <option selected>Select Genre</option>
@@ -148,13 +154,14 @@ session_start();
             mkdir("../images/shows/" . $fileid);
         }
         move_uploaded_file($_FILES["photo"]["tmp_name"], "../images/shows/$fileid/" . $_FILES["photo"]["name"]);
-        $query = "INSERT INTO `all_movie_info`(`name`,`genre`,`rating`,`runtime`,`trailer`,`release`,`about`, `cast`,`visibility`,`movie_image`) VALUES ('$_POST[name]','$_POST[genre]','$_POST[rating]','$_POST[runtime]','$_POST[trailer]','$_POST[release]','$_POST[about]','$_POST[cast]','$_POST[visibility]','$productimage')";
+        $query = "INSERT INTO `all_movie_info`(`name`,`item`,`genre`,`rating`,`runtime`,`trailer`,`release`,`about`, `cast`,`visibility`,`movie_image`) VALUES ('$_POST[name]','$_POST[item]','$_POST[genre]','$_POST[rating]','$_POST[runtime]','$_POST[trailer]','$_POST[release]','$_POST[about]','$_POST[cast]','$_POST[visibility]','$productimage')";
         if (mysqli_query($con, $query)) {
             echo "
           <script>
           alert('Movie added.');
           window.location.href='movie_info.php';
-          </script>
+          </script>-
+
           ";
         } else {
             echo "
@@ -172,7 +179,7 @@ session_start();
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- swipper js link  -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- jquery js  -->

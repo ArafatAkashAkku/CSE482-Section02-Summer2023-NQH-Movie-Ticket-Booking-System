@@ -7,37 +7,48 @@ if (isset($_POST['submit'])) {
     $query = " SELECT * FROM `admin_info` WHERE `email`='$_POST[email]'";
     $result = mysqli_query($con, $query);
     if ($result) {
-        if (mysqli_num_rows($result) == 1) {
+        if (mysqli_num_rows($result) > 0) {
             $result_fetch = mysqli_fetch_assoc($result);
             if ($result_fetch['verified'] == 1) {
-                $_SESSION['admin_logged_in'] = true;
-                $_SESSION['email'] = $result_fetch['email'];
-                $_SESSION['id'] = $result_fetch['id'];
-                $_SESSION['fullname'] = $result_fetch['fullname'];
-                header("location:admin_dashboard.php?email=$_SESSION[email]&id=$_SESSION[id]");
+                if($result_fetch['password'] === $_POST['password']){
+                    $_SESSION['admin_logged_in'] = true;
+                    $_SESSION['email'] = $result_fetch['email'];
+                    $_SESSION['id'] = $result_fetch['id'];
+                    $_SESSION['fullname'] = $result_fetch['fullname'];
+                    setcookie("adminemail",$result_fetch['email'],time()+(86400*30),"/");
+                    header("location:admin_dashboard.php?email=$_SESSION[email]&id=$_SESSION[id]");
+                } else {
+                    echo "
+                    <script>
+                    alert('Password not matched');
+                    window.location.href='index.php';
+                    </script>
+                    ";
+                }
+
             } else {
                 echo "
-      <script>
-      alert('Email not verified);
-      window.location.href='index.php';
-      </script>
-      ";
+                <script>
+                alert('Email not verified');
+                window.location.href='index.php';
+                </script>
+                ";
             }
         } else {
             echo "
-      <script>
-      alert('Email not registered);
-      window.location.href='index.php';
-      </script>
-      ";
+        <script>
+        alert('Email not registered');
+        window.location.href='index.php';
+        </script>
+        ";
         }
     } else {
         echo "
-      <script>
-      alert('Can not run query');
-      window.location.href='index.php';
-      </script>
-      ";
+        <script>
+        alert('Can not run query');
+        window.location.href='index.php';
+        </script>
+        ";
     }
 }
 
@@ -76,7 +87,7 @@ if (isset($_POST['submit'])) {
                 <form class="p-3" action="" method="POST" autocomplete="off">
                     <div class="form-group py-2">
                         <div class="input-field">
-                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2">
+                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2" value="<?php if(isset($_COOKIE['adminemail'])){ echo $_COOKIE['adminemail']; }  ?>">
                         </div>
                     </div>
                     <div class="form-group py-2">
@@ -103,7 +114,7 @@ if (isset($_POST['submit'])) {
     <!-- footer end  -->
 
     <!-- external js link  -->
-    <link rel="stylesheet" href="externals/js/script.js">
+    <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- swipper js link  -->

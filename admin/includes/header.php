@@ -42,6 +42,18 @@
                                 <li> <a class="dropdown-item text-light bg-dark" href="movie_info_add.php">Add Movie Info</a></li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" aria-current="page" href="cineplex_info.php">Cineplex</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" aria-current="page" href="user_info.php">User</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" aria-current="page" href="review_info.php">Review</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" aria-current="page" href="order_info.php">Ticket Purchase</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Account Info
