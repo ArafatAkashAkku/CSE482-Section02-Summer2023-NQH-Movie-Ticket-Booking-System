@@ -37,20 +37,64 @@ if (isset($_GET["id"])) {
     <!-- main start  -->
     <main>
 
-    <h1 class="text-center">Movie Details</h1>
-            <?php
-            $ret = mysqli_query($con, "select * from reviews where id='$id'");
-            $rowitems = mysqli_fetch_array($ret, MYSQLI_ASSOC);
-            ?>
+        <?php
+        $ret = mysqli_query($con, "select * from reviews where id='$id'");
+        $rowitems = mysqli_fetch_array($ret, MYSQLI_ASSOC);
+        ?>
+        <?php
+        $queryy = "select * from all_movie_info";
+        $rett = mysqli_query($con, $queryy);
+        while ($roww = mysqli_fetch_array($rett)) {
+            if ($rowitems['movie'] === $roww['id']) {
+        ?>
+                <h1 class="text-center"><a href="movie_details.php?id=<?php echo htmlentities($roww["id"]); ?>" class="text-decoration-none"><span class="text-primary"><?php echo htmlentities($roww["name"]); ?></span></a> Review</h1>
+        <?php
+            }
+        }
+        ?>
 
-            
+        <div class="row gap-2 px-2 my-4 d-flex justify-content-center ">
+            <div class="col-5">
+                <?php
+                $queryy = "select * from all_movie_info";
+                $rett = mysqli_query($con, $queryy);
+                while ($roww = mysqli_fetch_array($rett)) {
+                    if ($rowitems['movie'] === $roww['id']) {
+                ?>
+                        <div style="display:flex;justify-content:center;align-items:center;">
+                            <img style="width:350px;height:450px;" src="images/shows/<?php echo htmlentities($roww['id']); ?>/<?php echo htmlentities($roww['movie_image']); ?>" alt="Movie">
+                        </div>
+                <?php
+                    }
+                }
+                ?>
+            </div>
+            <div class="col-5">
+                <div class="mb-5">
+                    <h2 class="mb-3"><?php echo htmlentities($rowitems['title']); ?></h2>
+                    <p class="mt-4"><?php echo htmlentities($rowitems['review']); ?></p>
+                </div>
+                <div class="d-flex justify-content-between align-item-center">
+                    <div>
+                        <i class="fa-solid fa-user text-success border rounded-circle bg-white p-1"></i><span class="ms-2"><?php echo htmlentities($rowitems['name']); ?></span>
+                    </div>
+                    <div>
+                        <p><?php echo htmlentities($rowitems['time']); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
     </main>
     <!-- main end  -->
 
     <!-- footer start  -->
     <?php include("includes/footer.php") ?>
     <!-- footer end  -->
-
+    <!-- jQuery library is required. -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->

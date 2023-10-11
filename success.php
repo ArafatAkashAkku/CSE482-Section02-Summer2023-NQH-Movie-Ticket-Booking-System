@@ -173,6 +173,8 @@ if (!empty($_GET['session_id'])) {
             </script>";
     }
     ?>
+        <!-- jQuery library is required. -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->

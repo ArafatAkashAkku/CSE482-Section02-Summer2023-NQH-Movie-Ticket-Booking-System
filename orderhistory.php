@@ -111,7 +111,8 @@ session_start();
     }
     ?>
 
-
+    <!-- jQuery library is required. -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
