@@ -31,7 +31,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         echo "
         <script>
         alert('Ticket is added to your cart!');
-        window.location.href='cart.php';
+        window.location.href='cart';
         </script>
         ";
     } else {
@@ -40,7 +40,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
             <script>
             alert('Ticket is already added to your cart!');
-            window.location.href='cart.php';
+            window.location.href='cart';
             </script>
             ";
         } else {
@@ -48,7 +48,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
         <script>
         alert('Ticket is added to your cart!');
-        window.location.href='cart.php';
+        window.location.href='cart';
         </script>
         ";
         }
@@ -86,7 +86,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- main start  -->
     <main>
 
-        <div class="card-body row mx-4 mb-3">
+        <div class="card-body row mx-2 mb-3">
             <div class="col-12 mt-3 text-center">
                 <h4>Search Results For <?php if (isset($_GET['search'])) {
                                             echo $_GET['search'];
@@ -101,11 +101,11 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                 if (mysqli_num_rows($query_run) > 0) {
                     foreach ($query_run as $items) {
             ?>
-                        <div class="col-md-4 col-6 mt-3 text-center">
+                        <div class="col-md-4 col-12 mt-3 text-center">
                             <div class="border border-success">
-                                <form action="" method="post">
+                                <form action="search_result" method="post">
                                     <div class="product-img">
-                                        <img style="width: 300px;height:350px;" src="images/shows/<?= $items['id']; ?>/<?= $items['movie_image']; ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                        <img  width="100%" height="350" src="images/shows/<?= $items['id']; ?>/<?= $items['movie_image']; ?>" class="mb-3 bg-light error-img" alt="<?= $items['name']; ?>" loading="lazy">
                                     </div>
                                     <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
                                                                                                             echo htmlentities($items["id"]);
@@ -124,7 +124,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                     }
                 } else {
                     ?>
-                    <div class="col-12 mt-3 text-center">
+                    <div class="col-12 mt-3 text-center no-search-found">
                         <div class="border border-warning p-2">
                             <h5><?php echo "No Movies Found"; ?></h5>
                         </div>
@@ -142,15 +142,12 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- footer start  -->
     <?php include("includes/footer.php") ?>
     <!-- footer end  -->
-    <!-- jQuery library is required. -->
+    <!-- jQuery library link -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
     <script src="externals/js/script.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <!-- internal script link  -->
 </body>
 
 </html>

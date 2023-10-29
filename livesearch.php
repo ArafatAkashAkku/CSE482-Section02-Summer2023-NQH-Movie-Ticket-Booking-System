@@ -23,7 +23,7 @@ if (isset($_POST['search'])) {
         Pass the fetched result as a parameter. -->
 
             <li onclick='fill("<?php echo $Result['Name']; ?>")'>
-                <a style="cursor:pointer; text-decoration:none;color:black;" href="search_result.php?search=<?php echo $Result['Name']; ?>">
+                <a style="cursor:pointer; text-decoration:none;color:black;" href="search_result?search=<?php echo $Result['Name']; ?>">
                     <!-- Display the searched result in the search box of "search.php". -->
                     <?php echo $Result['Name']; ?>
             </li></a>

@@ -73,7 +73,7 @@ if (!empty($_GET['session_id'])) {
                         // Insert transaction data into the database 
                         // mysqli_query($con, "INSERT INTO abs (`ww`,`desc`)values('ddd','<td>$product[name]</td><td>$product[quantity]</td><td> $product[item]<td>')");
 
-                        $sql = "INSERT INTO orders(`name`,email,orderdescription,paid_amount,paid_amount_currency,txn_id,payment_status,checkout_session_id,created,modified,deliverystatus) VALUES('" . $_SESSION['user_fullname'] . "','" . $_SESSION['user_email'] . "','<tr><td>$product[name]</td><td>$$product[price]</td><td>$product[quantity]</td><td> $product[item]<td></tr>','" . $paidAmount . "','" . $paidCurrency . "','" . $transactionID . "','" . $paymentStatus . "','" . $session_id . "',NOW(),NOW(),'success')";
+                        $sql = "INSERT INTO orders(`name`,email,orderdescription,paid_amount,paid_amount_currency,txn_id,payment_status,checkout_session_id,created,modified,deliverystatus) VALUES('" . $_SESSION['user_fullname'] . "','" . $_SESSION['user_email'] . "','<tr><td>$product[name]</td><td>BDT $product[price]</td><td>$product[quantity]</td><td> $product[item]<td></tr>','" . $paidAmount . "','" . $paidCurrency . "','" . $transactionID . "','" . $paymentStatus . "','" . $session_id . "',NOW(),NOW(),'success')";
                         $insert = $con->query($sql);
                         $paymentID = $con->insert_id;
 
@@ -102,15 +102,13 @@ if (!empty($_GET['session_id'])) {
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
     <!-- bootstrap css link  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -133,10 +131,10 @@ if (!empty($_GET['session_id'])) {
                 <h4>Payment Information</h4>
                 <p><b>Reference Number:</b> <?php echo $paymentID; ?></p>
                 <p><b>Transaction ID:</b> <?php echo $transactionID; ?></p>
-                <p><b>Paid Amount: $</b><?php echo $paidAmount ?></p>
+                <p><b>Paid Amount: BDT&nbsp;</b><?php echo $paidAmount ?></p>
                 <p><b>Payment Status:</b> <?php echo $paymentStatus; ?></p>
 
-                <h4>Product Information</h4>
+                <h4>Ticket Information</h4>
                 <table class="text-center">
                     <thead>
                         <tr>
@@ -160,27 +158,27 @@ if (!empty($_GET['session_id'])) {
                     </tbody>
                 </table>
             <?php } ?>
-            <a href="index.php" class="btn-link">Back to Home Page</a>
+            <a href="index" class="btn-link">Back to Home Page</a>
         </div>
         <!-- footer start  -->
         <?php include("includes/footer.php") ?>
         <!-- footer end  -->
     <?php
     } else {
-        echo "<script>
-            alert('You need to log in first');
-            window.location.href='login.php';
-            </script>";
+        echo "
+        <script>
+        window.location.href='login';
+        alert('You need to log in first');
+        </script>
+        ";
     }
     ?>
-        <!-- jQuery library is required. -->
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!-- jQuery library is required. -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 </body>
 
 </html>

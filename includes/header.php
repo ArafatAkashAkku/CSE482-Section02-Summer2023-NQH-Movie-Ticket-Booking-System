@@ -5,9 +5,9 @@
     }
 </style>
 <header style="position: relative;">
-    <nav class="navbar navbar-expand-lg bg-success navigation-header">
+    <nav class="navbar navbar-expand-lg bg-dark navigation-header">
         <div class="container-fluid">
-            <a class="navbar-brand text-light" href="index.php">MTBS</a>
+            <a class="navbar-brand text-warning" href="index">MTBS</a>
             <button class="navbar-toggler bg-light text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -17,66 +17,66 @@
                     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="index.php">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['user_fullname']; ?></span></a>
+                            <a class="nav-link text-light" aria-current="page" href="index">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['user_fullname']; ?></span></a>
                         </li>
 
                     <?php
                     } else {
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link text-light" aria-current="page" href="index">Home</a>
                         </li>
                     <?php
                     }
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="about.php">About</a>
+                        <a class="nav-link text-light" href="about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="pricing.php">Pricing</a>
+                        <a class="nav-link text-light" href="pricing">Pricing</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Movies
                         </a>
-                        <ul class="dropdown-menu bg-success">
-                            <li><a class="dropdown-item text-light bg-success" href="index.php#now-showing">Now Showing</a></li>
-                            <li><a class="dropdown-item text-light bg-success" href="index.php#upcoming-shows">Upcoming</a></li>
+                        <ul class="dropdown-menu bg-dark">
+                            <li><a class="dropdown-item text-light bg-dark" href="index#now-showing">Now Showing</a></li>
+                            <li><a class="dropdown-item text-light bg-dark" href="index#upcoming-shows">Upcoming</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="cineplex.php">Cineplex</a>
+                        <a class="nav-link text-light" href="cineplex">Cineplex</a>
                     </li>
                     <?php
                     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="account.php?email=<?php
+                            <a class="nav-link text-light" href="account?email=<?php
                                                                                     echo $_SESSION['user_email'];
                                                                                     ?>&id=<?php echo $_SESSION['user_id']; ?>">My Account</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="cart.php">Cart</a>
+                            <a class="nav-link text-light" href="cart">Cart</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="logout.php">Logout</a>
+                            <a class="nav-link text-light" href="logout">Logout</a>
                         </li>
                     <?php
                     } else {
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="login.php">Login</a>
+                            <a class="nav-link text-light" href="login">Login</a>
                         </li>
                     <?php
                     }
                     ?>
                 </ul>
-                <form class="d-flex flex-column" role="search" action="search_result.php" method="GET" autocomplete="off">
+                <form class="d-flex flex-column" role="search" action="search_result" method="GET" autocomplete="off">
                     <div class="d-flex">
                         <input type="text" id="search" name="search" required value="<?php if (isset($_GET['search'])) {
                                                                                 echo $_GET['search'];
                                                                             } ?>" class="form-control" placeholder="Search data">
-                        <button class="btn btn-outline-success bg-light text-success" type="submit">Search</button>
+                        <button class="btn btn-outline-warning text-light" type="submit">Search</button>
                     </div>
                     <div class="bg-light" id="display" style="position: absolute;top: 48px;width: 21vw;right: 6px;"></div>
                 </form>

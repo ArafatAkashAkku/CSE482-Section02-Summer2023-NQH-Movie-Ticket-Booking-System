@@ -31,7 +31,6 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         echo "
         <script>
         alert('Ticket is added to your cart!');
-        window.location.href='cart.php';
         </script>
         ";
     } else {
@@ -40,7 +39,6 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
             <script>
             alert('Ticket is already added to your cart!');
-            window.location.href='cart.php';
             </script>
             ";
         } else {
@@ -48,7 +46,6 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
         <script>
         alert('Ticket is added to your cart!');
-        window.location.href='cart.php';
         </script>
         ";
         }
@@ -66,8 +63,6 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -86,15 +81,15 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- main start  -->
     <main>
 
-        <div class="mx-4">
+        <div class="mx-2">
             <div class="row">
                 <div class="col-12 text-center">
                     <h4>Movie Filter Search</h4>
                     <h6 class="text-end text-decoration-underline filter-click">Filter Search Click</h6>
                 </div>
                 <!-- Brand List  -->
-                <div class="col-md-3 col-6 filter-show">
-                    <form action="movie_search_filter.php" method="GET">
+                <div class="col-md-3 col-10 filter-show">
+                    <form action="movie_search_filter" method="GET">
                         <div class="card shadow mt-3">
                             <div class="card-header bg-light">
                                 <h5>Filter
@@ -102,7 +97,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                 </h5>
                                 <div class="d-flex align-items-center justify-content-between mt-3">
                                     <h6>Genre List</h6>
-                                    <a href="movie_search_filter.php" class="text-decoration-none text-dark">
+                                    <a href="movie_search_filter" class="text-decoration-none text-dark">
                                         <h6>Clear List</h6>
                                     </a>
                                 </div>
@@ -122,8 +117,8 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                         <div>
                                             <label for="<?= $designerlist['genre']; ?>">
                                                 <input class="bg-warning" type="checkbox" id="<?= $designerlist['genre']; ?>" name="genre[]" value="<?= $designerlist['id']; ?>" <?php if (in_array($designerlist['id'], $checked)) {
-                                                                                                                                                                                            echo "checked";
-                                                                                                                                                                                        } ?> />
+                                                                                                                                                                                        echo "checked";
+                                                                                                                                                                                    } ?> />
                                                 <?= $designerlist['genre']; ?>
                                             </label>
                                         </div>
@@ -147,20 +142,20 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                 $designerschecked = [];
                                 $designerschecked = $_GET['genre'];
                                 foreach ($designerschecked as $rowbrand) {
-                                    // echo $rowbrand;
+
                                     $products = "SELECT * FROM all_movie_info WHERE genre IN ($rowbrand)";
                                     $products_run = mysqli_query($con, $products);
                                     if (mysqli_num_rows($products_run) > 0) {
                                         foreach ($products_run as $proditems) :
                             ?>
-                                            <div class="col-md-3 col-6 mt-3 text-center">
+                                            <div class="col-md-3 col-12 mt-3 text-center">
                                                 <div class="border border-warning bg-light">
-                                                    <form action="" method="post">
+                                                    <form action="movie_search_filter" method="post">
                                                         <div class="product-img">
-                                                            <img src="images/shows/<?= $proditems['id']; ?>/<?= $proditems['movie_image']; ?>" class="img-fluid mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                                            <img src="images/shows/<?= $proditems['id']; ?>/<?= $proditems['movie_image']; ?>" class="mb-3 bg-light error-img" width="100%" height="250" alt="<?= $proditems['name']; ?>" loading="lazy">
                                                         </div>
-                                                        <a class="text-dark text-decoration-none" href="movie_details.php?id=<?= $proditems['id']; ?>">
-                                                            <h5><?= $proditems['name']; ?></h5>
+                                                        <a class="text-dark text-decoration-none" href="movie_details?id=<?= $proditems['id']; ?>">
+                                                            <h5 class="shows-name"><?= $proditems['name']; ?></h5>
                                                         </a>
                                                         <p>Rating: <?= $proditems['rating']; ?></p>
                                                         <input type="hidden" name="item" value="<?php
@@ -180,14 +175,14 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                 if (mysqli_num_rows($products_run) > 0) {
                                     foreach ($products_run as $proditems) :
                                         ?>
-                                        <div class="col-md-3 col-6 mt-3 text-center">
+                                        <div class="col-md-3 col-12 mt-3 text-center">
                                             <div class="border border-warning bg-light">
-                                                <form action="" method="post">
+                                                <form action="movie_search_filter" method="post">
                                                     <div class="product-img">
-                                                        <img src="images/shows/<?= $proditems['id']; ?>/<?= $proditems['movie_image']; ?>" class="img-fluid mb-3 bg-light error-img" alt="Perfume" loading="lazy">
+                                                        <img src="images/shows/<?= $proditems['id']; ?>/<?= $proditems['movie_image']; ?>" class="mb-3 bg-light error-img" width="100%" height="250" alt="<?= $proditems['name']; ?>" loading="lazy">
                                                     </div>
-                                                    <a class="text-dark text-decoration-none" href="movie_details.php?id=<?= $proditems['id']; ?>">
-                                                        <h5><?= $proditems['name']; ?></h5>
+                                                    <a class="text-dark text-decoration-none" href="movie_details?id=<?= $proditems['id']; ?>">
+                                                        <h5 class="shows-name"><?= $proditems['name']; ?></h5>
                                                     </a>
                                                     <p>Rating: <?= $proditems['rating']; ?></p>
                                                     <input type="hidden" name="item" value="<?php
@@ -216,19 +211,16 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <!-- footer start  -->
     <?php include("includes/footer.php") ?>
     <!-- footer end  -->
-    <!-- jQuery library is required. -->
+    <!-- jQuery library link -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
-        // product search filter 
+        // product search filter on mobile 
         const filterClick = document.querySelector(".filter-click");
         const filterShow = document.querySelector(".filter-show");
-
         filterClick.onclick = () => {
             console.log("clicked")
             filterShow.classList.toggle("active");

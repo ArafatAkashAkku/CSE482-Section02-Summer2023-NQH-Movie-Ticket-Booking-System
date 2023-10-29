@@ -2,8 +2,6 @@
 require_once 'config.php';
 include 'dbConnect.php';
 session_start();
-$email = "";
-$id = "";
 if (isset($_GET["email"]) & isset($_GET["id"])) {
     $email = $_GET["email"];
     $id = $_GET["id"];
@@ -20,8 +18,6 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -31,7 +27,7 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
 
 </head>
 
-<body class="overflow-x-hidden">
+<body>
     <?php
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
     ?>
@@ -41,33 +37,196 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
         <!-- header end  -->
 
         <!-- main start  -->
-        <main>
-            <div class="d-flex flex-column align-items-center justify-content-center p-5 bg-warning">
-                <div class="bg-light p-3 res-width">
-                    <h2 class="text-muted text-center pt-2">Update Account Info Details</h2>
+        <main class="account-page  bg-light">
+            <div class="d-flex flex-column align-items-center justify-content-center py-5">
+                <div class="bg-light px-2">
                     <?php
                     $ret = mysqli_query($con, "select * from user_info where email='$email' and id='$id'");
-                    while ($row = mysqli_fetch_array($ret)) {
+                    $row = mysqli_fetch_array($ret);
+                    if ($row) {
                     ?>
-                        <form class="p-3" action="" method="POST" autocomplete="off">
-                            <div class="form-group py-2">
-                                <div class="input-field">
-                                    <h5 class="text-muted">Email</h5>
-                                    <input type="email" disabled name="email" class="form-control px-3 py-2" value="<?php
-                                                                                                                    echo htmlentities($row["email"]);
-                                                                                                                    ?>">
+                        <h2 class="text-muted text-center pt-2">Update Account Info Details</h2>
+                        <form action="account?email=<?php
+                                                    echo $_SESSION['user_email'];
+                                                    ?>&id=<?php echo $_SESSION['user_id']; ?>" method="POST" autocomplete="off" enctype="multipart/form-data">
+                            <div class="row gap-2 d-flex justify-content-center">
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Email</h5>
+                                            <input type="text" readonly name="fullname" required value="<?php echo htmlentities($row["email"]); ?>" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group py-2">
-                                <div class="input-field">
-                                    <h5 class="text-muted">Full Name</h5>
-                                    <input type="text" name="fullname" class="form-control px-3 py-2" value="<?php
-                                                                                                                echo htmlentities($row["fullname"]);
-                                                                                                                ?>">
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Full Name</h5>
+                                            <input type="text" name="fullname" value="<?php
+                                                                                        echo htmlentities($row["fullname"]);
+                                                                                        ?>" placeholder="Enter your full name" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <button class="btn btn-width btn-outline-success bg-success text-light" name="submit" type="submit">Update</button>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Gender</h5>
+                                            <select name="gender" class="border border-primary form-control px-3 py-2">
+                                                <option value="" <?php if ($row["gender"] == '') {
+                                                                        echo "selected";
+                                                                    } ?>>Select</option>
+                                                <option value="male" <?php if ($row["gender"] == 'male') {
+                                                                            echo "selected";
+                                                                        } ?>>Male</option>
+                                                <option value="female" <?php if ($row["gender"] == 'female') {
+                                                                            echo "selected";
+                                                                        } ?>>Female</option>
+                                                <option value="other" <?php if ($row["gender"] == 'other') {
+                                                                            echo "selected";
+                                                                        } ?>>Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Date of Birth</h5>
+                                            <input type="date" name="dob" placeholder="Enter your date of birth" value="<?php
+                                                                                                                        echo htmlentities($row["dob"]);
+                                                                                                                        ?>" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Phone Number</h5>
+                                            <input type="number" name="phone" value="<?php
+                                                                                        echo htmlentities($row["phone"]);
+                                                                                        ?>" placeholder="Enter your phone no" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Blood Group</h5>
+                                            <select name="blood" class="border border-primary form-control px-3 py-2">
+                                                <option value="" <?php if ($row["blood"] == '') {
+                                                                        echo "selected";
+                                                                    } ?>>Select</option>
+                                                <option value="A+" <?php if ($row["blood"] == 'A+') {
+                                                                        echo "selected";
+                                                                    } ?>>A+</option>
+                                                <option value="A-" <?php if ($row["blood"] == 'A-') {
+                                                                        echo "selected";
+                                                                    } ?>>A-</option>
+                                                <option value="B+" <?php if ($row["blood"] == 'B+') {
+                                                                        echo "selected";
+                                                                    } ?>>B+</option>
+                                                <option value="B-" <?php if ($row["blood"] == 'B-') {
+                                                                        echo "selected";
+                                                                    } ?>>B-</option>
+                                                <option value="O+" <?php if ($row["blood"] == 'O+') {
+                                                                        echo "selected";
+                                                                    } ?>>O+</option>
+                                                <option value="O-" <?php if ($row["blood"] == 'O-') {
+                                                                        echo "selected";
+                                                                    } ?>>O-</option>
+                                                <option value="AB+" <?php if ($row["blood"] == 'AB+') {
+                                                                        echo "selected";
+                                                                    } ?>>AB+</option>
+                                                <option value="AB-" <?php if ($row["blood"] == 'AB-') {
+                                                                        echo "selected";
+                                                                    } ?>>AB-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Religion</h5>
+                                            <input type="text" name="religion" value="<?php
+                                                                                        echo htmlentities($row["religion"]);
+                                                                                        ?>" placeholder="Enter your religion" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Occupation</h5>
+                                            <input type="text" name="occupation" value="<?php
+                                                                                        echo htmlentities($row["occupation"]);
+                                                                                        ?>" placeholder="Enter your occupation" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Nationality</h5>
+                                            <input type="text" name="nationality" value="<?php
+                                                                                            echo htmlentities($row["nationality"]);
+                                                                                            ?>" placeholder="Enter your nationality" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Marital Status</h5>
+                                            <select name="maritalstatus" class="border border-primary form-control px-3 py-2">
+                                                <option value="" <?php if ($row["maritalstatus"] == '') {
+                                                                        echo "selected";
+                                                                    } ?>>Select</option>
+                                                <option value="married" <?php if ($row["maritalstatus"] == 'married') {
+                                                                            echo "selected";
+                                                                        } ?>>Married</option>
+                                                <option value="notmarried" <?php if ($row["maritalstatus"] == 'notmarried') {
+                                                                                echo "selected";
+                                                                            } ?>>Not Married</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <h5 class="text-muted">Address</h5>
+                                            <input type="text" name="address" value="<?php
+                                                                                        echo htmlentities($row["address"]);
+                                                                                        ?>" placeholder="Enter your address" class="border border-primary form-control px-3 py-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <button class="btn btn-width btn-outline-warning text-dark" name="submit" type="submit">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
                         </form>
+                    <?php
+                    } else {
+                    ?>
+                        <h2 class="text-muted text-center py-3 pt-2 my-3">Looks like you are trying to access other profiles by misleading urls <br> Please return to your account asap </h2>
                     <?php
                     }
                     ?>
@@ -84,13 +243,14 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
 
     <?php
     } else {
-        echo "<script>
-            alert('You need to log in first');
-            window.location.href='login.php';
-            </script>";
+        echo "
+        <script>
+        alert('You need to log in first');
+        window.location.href='login';
+        </script>
+        ";
     }
     ?>
-
 
     <?php
     if (isset($_POST['submit'])) {
@@ -102,40 +262,38 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
                 $query = "UPDATE `user_info` SET `fullname`='$_POST[fullname]' WHERE `email`='$email' and `id`='$id'";
                 if (mysqli_query($con, $query)) {
                     echo "
-                <script>
-                alert('Account info updated - Please log in');
-                window.location.href='logout.php';
-                </script>
-                ";
+                    <script>
+                    alert('Account info updated - Please log in');
+                    window.location.href='logout';
+                    </script>
+                    ";
                 } else {
                     echo "
-          <script>
-          alert('Server Down');
-          window.location.href='index.php';
-          </script>
-          ";
+                    <script>
+                    alert('Server Down');
+                    window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
+                    </script>
+                    ";
                 }
             }
         } else {
             echo "
-        <script>
-        alert('Can not run query');
-        window.location.href='index.php';
-        </script>
-        ";
+            <script>
+            alert('Can not run query');
+            window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
+            </script>
+            ";
         }
     }
-
     ?>
-    <!-- jQuery library is required. -->
+
+    <!-- jQuery library link -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
     <script src="externals/js/script.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    
+
 </body>
 
 </html>

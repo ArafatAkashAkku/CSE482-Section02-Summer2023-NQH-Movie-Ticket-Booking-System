@@ -12,10 +12,10 @@ function fill(Value) {
     $('#search').val(Value);
     // Hide the "display" div in "search.php".
     $('#display').hide();
- }
- $(document).ready(function() {
+}
+$(document).ready(function () {
     // When a key is pressed in the "Search box" of "search.php", this function will be called.
-    $("#search").keyup(function() {
+    $("#search").keyup(function () {
         // Assign the search box value to a JavaScript variable named "name".
         var name = $('#search').val();
         // Validate if "name" is empty.
@@ -36,11 +36,11 @@ function fill(Value) {
                     search: name
                 },
                 // If a result is found, this function will be called.
-                success: function(html) {
+                success: function (html) {
                     // Assign the result to the "display" div in "search.php".
                     $("#display").html(html).show();
                 }
             });
         }
     });
- });
+});

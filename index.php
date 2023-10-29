@@ -14,14 +14,14 @@ if (isset($_POST['submit'])) {
     if ($resultt) {
         echo "
         <script>
-        window.location.href='index.php#reviews';
+        window.location.href='index#reviews';
         alert('Review Message Sent Successfully');
         </script>
         ";
     } else {
         echo "
         <script>
-        window.location.href='index.php#honest-review';
+        window.location.href='index#honest-review';
         alert('Review Message Sent Failed');
         </script>
         ";
@@ -55,7 +55,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         echo "
         <script>
         alert('Ticket is added to your cart!');
-        window.location.href='cart.php';
+        window.location.href='cart';
         </script>
         ";
     } else {
@@ -64,17 +64,17 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             echo "
             <script>
             alert('Ticket is already added to your cart!');
-            window.location.href='cart.php';
+            window.location.href='cart';
             </script>
             ";
         } else {
             $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
             echo "
-        <script>
-        alert('Ticket is added to your cart!');
-        window.location.href='cart.php';
-        </script>
-        ";
+            <script>
+            alert('Ticket is added to your cart!');
+            window.location.href='cart';
+            </script>
+            ";
         }
     }
 }
@@ -87,6 +87,11 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- meta tag for seo purpose  -->
+    <base href="localhost/MTBS/">
+    <meta name="description" content="MTBS is a user-friendly online platform dedicated to simplifying the process of purchasing movie tickets. With a wide array of cinema options, showtimes, and locations, MTBS offers moviegoers a convenient and efficient way to browse, select, and secure tickets for their favorite films. Whether you're planning a solo movie night or a group outing, MTBS provides a seamless experience, making it easy to book your tickets and enjoy the latest blockbuster or indie flick hassle-free. Say goodbye to long queues and hello to a hassle-free moviegoing experience with MTBS.">
+    <meta name="keywords" content="Movie Tickets, Online Booking, Showtimes, Cinema Tickets, Film Reservations, Movie Screening, Theater Tickets, Box Office, Movie Seats, Ticket Prices, Movie Theaters, Moviegoers, Ticket Availability, Movie Showings, Movie Night Out, Movie Premieres, Film Releases, Seat Selection, Movie Buffs, Entertainment Events">
+    <meta name="robots" content="index, follow">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
     <!-- bootstrap css link  -->
@@ -111,12 +116,21 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <section id="top-banner">
             <div class="swiper top-banner">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="images/banners/banner1.jpg" style="width: 100vw;" class="error-img banner-img" alt="Banner">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/banners/banner2.jpg" style="width: 100vw;" class="error-img banner-img" alt="Banner">
-                    </div>
+                    <?php
+                    $ret = mysqli_query($con, "select * from movie_banner order by `id` desc limit 3");
+                    while ($row = mysqli_fetch_array($ret)) {
+                    ?>
+
+                        <div class="swiper-slide">
+                            <img src="images/banners/<?php
+                                                        echo htmlentities($row['id']);
+                                                        ?>/<?php echo htmlentities($row['banner_image']);
+                                                            ?>" width="100%" class="error-img banner-img" alt="<?php echo htmlentities($row['movie']);
+                                                                                                                ?>">
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
@@ -124,31 +138,33 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <!-- top banner section end  -->
 
         <!-- now showing section start  -->
-        <section id="now-showing" class="py-3" style="position: relative;">
+        <section id="now-showing" class="py-3">
             <div class="text-center">
                 <h1>Now Showing</h1>
-                <a href="movie_search_filter.php">See All</a>
-                <div class="swiper all-shows mx-4 px-3 mt-3" style="position: static;">
+                <a href="movie_search_filter">See All</a>
+                <div class="swiper all-shows mx-4 px-3 mt-3">
                     <div class="swiper-wrapper">
                         <?php
                         $ret = mysqli_query($con, "select * from all_movie_info where visibility='nowshowing' order by `id` desc");
                         while ($row = mysqli_fetch_array($ret)) {
                         ?>
                             <div class="swiper-slide bg-light border border-success">
-                                <form action="" method="post">
+                                <form action="index" method="post">
                                     <div class="movie-img">
-                                        <img style="width: 300px;height:350px;" src="images/shows/<?php
-                                                                                                    echo htmlentities($row['id']);
-                                                                                                    ?>/<?php
-                                                                                                        echo htmlentities($row['movie_image']);
-                                                                                                        ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                        <img width="300" height="350" src="images/shows/<?php
+                                                                                        echo htmlentities($row['id']);
+                                                                                        ?>/<?php
+                                                                                            echo htmlentities($row['movie_image']);
+                                                                                            ?>" class="mb-3 bg-light error-img" alt="<?php
+                                                                                                                                        echo htmlentities($row["name"]);
+                                                                                                                                        ?>" loading="lazy">
                                     </div>
-                                    <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
-                                                                                                            echo htmlentities($row["id"]);
-                                                                                                            ?>">
-                                        <h3><?php
-                                            echo htmlentities($row["name"]);
-                                            ?></h3>
+                                    <a class="text-dark text-decoration-none" href="movie_details?id=<?php
+                                                                                                        echo htmlentities($row["id"]);
+                                                                                                        ?>">
+                                        <h3 class="shows-name"><?php
+                                                                echo htmlentities($row["name"]);
+                                                                ?></h3>
                                     </a>
                                     <p>Rating: <?php
                                                 echo htmlentities($row["rating"]);
@@ -171,10 +187,10 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <!-- now showing section end  -->
 
         <!-- review section start  -->
-        <section id="reviews" class="py-3" style="position: relative;">
+        <section id="reviews" class="py-3">
             <div class="text-center">
                 <h1>Reviews</h1>
-                <div class="swiper slider-for-review px-3 mx-4 mt-3" style="position: static;">
+                <div class="swiper slider-for-review px-3 mx-4 mt-3">
                     <div class="swiper-wrapper mb-5">
                         <?php
                         $ret = mysqli_query($con, "select * from reviews where verified='1' order by `id` desc");
@@ -187,22 +203,22 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                                 while ($roww = mysqli_fetch_array($rett)) {
                                     if ($row['movie'] === $roww['id']) {
                                 ?>
-                                        <div style="display:flex;justify-content:center;align-items:center;">
-                                            <img style="width:150px;height:150px;" src="images/shows/<?php echo htmlentities($roww['id']); ?>/<?php echo htmlentities($roww['movie_image']); ?>" alt="Movie">
+                                        <div class="d-flex align-items-center">
+                                            <img width="100" height="100" class="error-img rounded-circle me-4" src="images/shows/<?php echo htmlentities($roww['id']); ?>/<?php echo htmlentities($roww['movie_image']); ?>" alt="<?php echo htmlentities($roww["name"]); ?>">
+                                            <h4 class="text-muted"><?php echo htmlentities($roww["name"]); ?></h4>
                                         </div>
-                                        <h4 class="text-center text-muted"><?php echo htmlentities($roww["name"]); ?></h4>
                                 <?php
                                     }
                                 }
                                 ?>
-                                <h3 style="font-weight: bold;"><?php echo htmlentities(substr($row["title"], 0, 40)) . "........"; ?></h3>
+                                <h3 class="shows-name fw-bolder"><?php echo htmlentities(substr($row["title"], 0, 40)) . "........"; ?></h3>
                                 <p><?php echo htmlentities(substr($row["review"], 0, 300)) . "........"; ?></p>
-                                <div class="d-flex justify-content-end align-item-center my-3">
+                                <div class="d-flex justify-content-end align-items-center my-3">
                                     <div>
-                                        <a href="movie_review.php?id=<?php echo htmlentities($row['id']); ?>">Read More...</a>
+                                        <a href="movie_review?id=<?php echo htmlentities($row['id']); ?>">Read More...</a>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-item-center">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <i class="fa-solid fa-user text-success border rounded-circle bg-white p-1"></i><span class="ms-2"><?php echo htmlentities($row['name']); ?></span>
                                     </div>
@@ -223,31 +239,33 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <!-- review section end  -->
 
         <!-- upcoming shows section start  -->
-        <section id="upcoming-shows" class="py-3" style="position: relative;">
+        <section id="upcoming-shows" class="py-3">
             <div class="text-center">
                 <h1>Upcoming Shows</h1>
                 <a href="movie_search_filter.php">See All</a>
-                <div class="swiper all-shows mx-4 px-3 mt-3" style="position: static;">
+                <div class="swiper all-shows mx-4 px-3 mt-3">
                     <div class="swiper-wrapper">
                         <?php
                         $ret = mysqli_query($con, "select * from all_movie_info where visibility='upcomingshow' order by `id` desc");
                         while ($row = mysqli_fetch_array($ret)) {
                         ?>
                             <div class="swiper-slide bg-light border border-success">
-                                <form action="" method="post">
+                                <form action="index" method="post">
                                     <div class="movie-img">
-                                        <img style="width: 300px;height:350px;" src="images/shows/<?php
-                                                                                                    echo htmlentities($row['id']);
-                                                                                                    ?>/<?php
-                                                                                                        echo htmlentities($row['movie_image']);
-                                                                                                        ?>" class="mb-3 bg-light error-img" alt="Movie" loading="lazy">
+                                        <img width="300" height="350" src="images/shows/<?php
+                                                                                        echo htmlentities($row['id']);
+                                                                                        ?>/<?php
+                                                                                            echo htmlentities($row['movie_image']);
+                                                                                            ?>" class="mb-3 bg-light error-img" alt="<?php
+                                                                                                                                        echo htmlentities($row["name"]);
+                                                                                                                                        ?>" loading="lazy">
                                     </div>
-                                    <a class="text-dark text-decoration-none" href="movie_details.php?id=<?php
-                                                                                                            echo htmlentities($row["id"]);
-                                                                                                            ?>">
-                                        <h3><?php
-                                            echo htmlentities($row["name"]);
-                                            ?></h3>
+                                    <a class="text-dark text-decoration-none" href="movie_details?id=<?php
+                                                                                                        echo htmlentities($row["id"]);
+                                                                                                        ?>">
+                                        <h3 class="shows-name"><?php
+                                                                echo htmlentities($row["name"]);
+                                                                ?></h3>
                                     </a>
                                     <p>Rating: <?php
                                                 echo htmlentities($row["rating"]);
@@ -272,10 +290,10 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <?php
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
         ?>
-            <section id="honest-review" class="py-3" style="position: relative;">
+            <section id="honest-review" class="py-3">
                 <div class="mx-4 px-3 mt-3">
                     <h1 class="text-center">Submit Reviews For Movies</h1>
-                    <form action="" method="post" id="review-form">
+                    <form action="index.php" method="post" id="review-form">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Reviewer Name</label>
                             <input type="text" disabled name="name" class="form-control" value="<?php echo $_SESSION['user_fullname']; ?>" id="review-name" required>
@@ -298,11 +316,11 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                         </div>
                         <div class="mb-3">
                             <label for="review-title" class="form-label">Reviewer Title</label>
-                            <input type="text" name="title" class="form-control" required id="exampleFormControlInput1" placeholder="Enter a title for review">
+                            <input type="text" name="title" class="form-control" minlength="40" required id="exampleFormControlInput1" placeholder="Enter a title for review">
                         </div>
                         <div class="mb-3">
                             <label for="review-message" class="form-label">Review</label>
-                            <textarea name="review" class="form-control" required id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea name="review" class="form-control" minlength="300" required id="exampleFormControlTextarea1" rows="10"></textarea>
                         </div>
 
                         <div class="mb-3 text-center">
@@ -366,18 +384,18 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             },
             breakpoints: {
                 50: {
-                    slidesPerView: 2,
-                    spaceBetween: 10,
+                    slidesPerView: 1,
+                    spaceBetween: 25,
                 },
-                500: {
+                700: {
                     slidesPerView: 2,
-                    spaceBetween: 10,
+                    spaceBetween: 20,
                 },
-                980: {
+                1011: {
                     slidesPerView: 3,
                     spaceBetween: 20,
                 },
-                1024: {
+                1339: {
                     slidesPerView: 4,
                     spaceBetween: 20,
                 }
@@ -396,17 +414,9 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
             breakpoints: {
                 50: {
                     slidesPerView: 1,
-                    spaceBetween: 15,
-                },
-                700: {
-                    slidesPerView: 2,
-                    spaceBetween: 15,
-                },
-                980: {
-                    slidesPerView: 2,
                     spaceBetween: 20,
                 },
-                1024: {
+                700: {
                     slidesPerView: 2,
                     spaceBetween: 20,
                 }

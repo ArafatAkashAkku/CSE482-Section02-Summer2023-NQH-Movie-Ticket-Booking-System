@@ -32,7 +32,7 @@ try {
   $mail->isHTML(true);                                  //Set email format to HTML
   $mail->Subject = 'Email Verification for Movie Ticket Booking System';
   $mail->Body    = "Thanks for your registration. <br>
-  Click the link below to verify your email address <a href='http://localhost/MTBS/verify.php?email=$email&v_code=$v_code'>Verifiy</a>";
+  Click the link below to verify your email address <a href='http://localhost/MTBS/verify?email=$email&v_code=$v_code'>Verifiy</a>";
   $mail->send();
   return true;
 } catch (Exception $e) {
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
         echo "
          <script>
          alert('$result_fetch[email] - Email already taken');
-         window.location.href='signup.php';
+         window.location.href='signup';
          </script>
          ";
       }
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
         <script>
         alert('$result_fetch[email] - Email available for registration');
         </script>
-    ";
+        ";
       }
     } else {
       $v_code = bin2hex(random_bytes(16));
@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
         echo "
         <script>
         alert('Registration successful. Please check your email');
-        window.location.href='login.php';
+        window.location.href='login';
         </script>
         ";
 
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
         echo "
         <script>
         alert('Server Down');
-        window.location.href='signup.php';
+        window.location.href='signup';
         </script>
         ";
       }
@@ -88,7 +88,7 @@ if (isset($_POST['submit'])) {
     echo "
       <script>
       alert('Can not run query');
-      window.location.href='index.php';
+      window.location.href='signup';
       </script>
       ";
   }
@@ -108,8 +108,6 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="externals/css/style.css">
     <!-- bootstrap css link  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -123,11 +121,11 @@ if (isset($_POST['submit'])) {
     <?php include("includes/header.php") ?>
     <!-- header end  -->
     <!-- main start  -->
-    <main>
-        <div class="d-flex flex-column align-items-center justify-content-center p-5 bg-secondary">
-            <div class="bg-light p-3 res-width">
-                <h2 class="text-muted text-center pt-2">Enter your signup details</h2>
-                <form class="p-3" action="" method="POST" autocomplete="off">
+    <main class="bg-light">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <div class="g-light p-3 border border-warning shadow-lg p-3 mb-5 bg-body-warning rounded">
+                <h2 class="text-muted text-center pt-2">Enter your MTBS signup details</h2>
+                <form class="p-3" action="signup" method="POST" autocomplete="off">
                     <div class="form-group py-2">
                         <div class="input-field">
                             <input type="text" name="fullname" placeholder="Enter your full name" required class="form-control px-3 py-2">
@@ -151,9 +149,9 @@ if (isset($_POST['submit'])) {
                         </label>
                     </div>
                     <button class="btn btn-width btn-outline-success bg-success text-light" name="submit" type="submit">Sign Up</button>
-                    <div class="text-center mt-3 text-muted">Already a member? <a href="login.php">Sign In</a></div>
+                    <div class="text-center mt-3 text-muted">Already a member? <a href="login">Sign In</a></div>
                     <div class="text-center mt-3 text-muted">
-                        <a href="forgetpassword.php">Forgot Password?</a>
+                        <a href="forgetpassword">Forgot Password?</a>
                     </div>
                 </form>
             </div>
@@ -165,14 +163,12 @@ if (isset($_POST['submit'])) {
     <!-- footer start  -->
     <?php include("includes/footer.php") ?>
     <!-- footer end  -->
-    <!-- jQuery library is required. -->
+    <!-- jQuery library link -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- internal script link  -->
     <script>
         function myFunction() {

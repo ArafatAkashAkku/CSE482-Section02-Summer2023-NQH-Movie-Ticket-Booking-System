@@ -49,22 +49,20 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
-    <!-- favicon link  -->
-    <link rel="shortcut icon" href="images/logo/favicon.ico" type="image/x-icon">
     <!-- datatables net  -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- favicon link  -->
+    <link rel="shortcut icon" href="images/logo/favicon.ico" type="image/x-icon">
     <!-- website title  -->
     <title>MTBS | Cart</title>
 
 </head>
 
-<body class="overflow-x-hidden">
+<body>
     <?php
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
     ?>
@@ -73,16 +71,16 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
         <!-- header end  -->
 
         <!-- main start  -->
-        <main class="mx-4 my-3 overflow-scroll">
-            <div class="d-flex justify-content-between">
-                <button class="btn btn-link text-decoration-none "><a class="text-decoration-none bg-warning text-dark px-3 py-1 border border-warning rounded" href="orderhistory.php">Ticket Order History</a></button>
-                <button class="btn btn-link text-decoration-none "><a class="text-decoration-none bg-warning text-dark px-3 py-1 border border-warning rounded" href="index.php">Continue booking</a></button>
+        <main class="mx-2 mb-3 overflow-scroll cart-page">
+            <div class="d-flex justify-content-between cart-buttons">
+                <button class="btn btn-link text-decoration-none "><a class="text-decoration-none bg-warning text-dark px-3 py-1 border border-warning rounded" href="orderhistory">Ticket Order History</a></button>
+                <button class="btn btn-link text-decoration-none "><a class="text-decoration-none bg-warning text-dark px-3 py-1 border border-warning rounded" href="index">Continue booking</a></button>
             </div>
             <?php
             if (isset($_SESSION["shopping_cart"])) {
                 $total_price = 0;
             ?>
-                <table id="example" class="table table-striped" style="width:100%">
+                <table class="table table-striped cart-table mt-5">
                     <thead>
                         <tr>
                             <th scope="col">Movie Image</th>
@@ -101,11 +99,11 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                             <tr>
                                 <td><img src='images/shows/<?php
                                                             echo ($product['id']);
-                                                            ?>/<?php echo $product["image"]; ?>' width="70" height="50" /></td>
+                                                            ?>/<?php echo $product["image"]; ?>' width="70" height="50" alt="<?php echo $product["name"]; ?>" /></td>
                                 <td><?php echo $product["name"]; ?></td>
                                 <td><?php echo $product["rating"]; ?></td>
                                 <td>
-                                    <form method='post' action=''>
+                                    <form method='post' action='cart'>
                                         <input type='hidden' name='item' value="<?php echo $product["item"]; ?>" />
                                         <input type='hidden' name='action' value="change" />
                                         <select name='quantity' class='quantity' onchange="this.form.submit()">
@@ -123,7 +121,7 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                                     </form>
                                 </td>
                                 <td>
-                                    <form method='post' action=''>
+                                    <form method='post' action='cart'>
                                         <input type='hidden' name='itemm' value="<?php echo $product["item"]; ?>" />
                                         <input type='hidden' name='actionn' value="changee" />
                                         <select name='price' class='price' onchange="this.form.submit()">
@@ -135,7 +133,7 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                                 </td>
                                 <td><?php echo "BDT&nbsp;" . $product["price"] * $product["quantity"]; ?></td>
                                 <td>
-                                    <form method='post' action=''>
+                                    <form method='post' action='cart'>
                                         <input type='hidden' name='item' value="<?php echo $product["item"]; ?>" />
                                         <input type='hidden' name='action' value="remove" />
                                         <button type='submit' class='remove px-3 py-1 bg-danger border text-light border-warning rounded'>Remove Ticket</button>
@@ -147,17 +145,19 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                             $total_price += ($product["price"] * $product["quantity"]);
                         }
                 ?>
-                <td colspan="7" class="text-center">
+                <td colspan="7" class="text-center pt-5">
                     <strong>TOTAL: <?php echo "BDT&nbsp;" . $total_price; ?></strong>
                 </td>
                 </table>
-                <div class="bg-warning text-center border border-warning rounded">
-                    <button class="btn btn-link text-decoration-none text-dark" id="payButton">Proceed to Checkout</button>
+                <div class="text-center border border-warning rounded mt-4">
+                    <button class="btn btn-width btn-outline-warning text-dark" id="payButton">Proceed to Checkout</button>
                 </div>
                 <div id="paymentResponse" class="text-center"></div>
             <?php
             } else {
-                echo "<h3 class='text-center'>Your cart is empty!</h3>";
+            ?>
+                <h3 class='text-center mt-4'>Your cart is empty!</h3>
+            <?php
             }
             ?>
         </main>
@@ -168,10 +168,12 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
         <!-- footer end  -->
     <?php
     } else {
-        echo "<script>
-                alert('You need to log in first');
-                window.location.href='index.php';
-                </script>";
+        echo "
+        <script>
+        alert('You need to log in first');
+        window.location.href='login';
+        </script>
+                ";
     }
     ?>
 
@@ -193,7 +195,7 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
                     Name: "MTBS",
                     ID: "MTBS",
                     Price: "<?php echo $total_price ?>",
-                    Currency: "USD",
+                    Currency: "BDT",
                 }),
             }).then(function(result) {
                 return result.json();
@@ -226,19 +228,17 @@ if (isset($_POST['actionn']) && $_POST['actionn'] == "changee") {
             });
         });
     </script>
-    <!-- jQuery library is required. -->
+
+    <!-- jQuery library link. -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- external js link  -->
-    <script src="externals/js/script.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- jquery js  -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!-- datatables net  -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
+    <!-- external js link  -->
+    <script src="externals/js/script.js"></script>
 
 </body>
 
