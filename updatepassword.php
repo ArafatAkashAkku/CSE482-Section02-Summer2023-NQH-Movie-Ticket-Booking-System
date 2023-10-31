@@ -28,20 +28,21 @@ include 'dbConnect.php';
     <?php include("includes/header.php") ?>
     <!-- header end  -->
     <!-- main start  -->
-    <main?>
+    <main class="bg-light">
 
         <?php
 
         if (isset($_GET['email']) && isset($_GET['resettoken'])) {
             date_default_timezone_set('Asia/Dhaka');
             $date = date("Y-m-d");
-            $query = " SELECT * FROM `user_info` WHERE `email`='$_GET[email]' AND `resettoken`='$_GET[resettoken]' AND `resettokenexpire`='$date'";
+            $email = mysqli_real_escape_string($con,$_GET['email']);
+            $query = " SELECT * FROM `user_info` WHERE `email`='$email' AND `resettoken`='$_GET[resettoken]' AND `resettokenexpire`='$date'";
             $result = mysqli_query($con, $query);
             if ($result) {
                 if (mysqli_num_rows($result) == 1) {
                     echo "
-                    <div class='d-flex flex-column align-items-center justify-content-center p-5 bg-warning'>
-                        <div class='bg-light p-3 res-width'>
+                    <div class='d-flex flex-column align-items-center justify-content-center py-5'>
+                        <div class='bg-light p-3 border border-warning shadow-lg p-3 mb-5 bg-body-warning rounded'>
                             <h2 class='text-muted text-center pt-2'>Enter your new password</h2>
                             <form class='p-3' action='' method='POST' autocomplete='off'>
                                 <div class='form-group py-2'>
@@ -114,7 +115,8 @@ include 'dbConnect.php';
         <?php
         if (isset($_POST['submit'])) {
             $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-            $update = "UPDATE `user_info` SET `password`='$password',`resettoken`=NULL,`resettokenexpire`=NULL WHERE `email`='$_POST[email]'";
+            $email = mysqli_real_escape_string($con,$_POST['email']);
+            $update = "UPDATE `user_info` SET `password`='$password',`resettoken`=NULL,`resettokenexpire`=NULL WHERE `email`='$email'";
             if (mysqli_query($con, $update)) {
                 echo "
                 <script>

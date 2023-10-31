@@ -24,7 +24,7 @@ html {
 /* error image loader start  */
 
 .error-img {
-    background-image: url(../images/loader-gif.gif) !important;
+    background-image: url('../../images/loader-gif.gif') !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: auto !important;
@@ -63,15 +63,6 @@ html {
 }
 
 /* custom scrollbar section end */
-
-/* @media screen and (max-width:770px) {
-
-    .swiper-button-next,
-    .swiper-button-prev {
-        display: none !important;
-    }
-
-} */
 
 /* index.php page start  */
 
@@ -142,17 +133,18 @@ html {
 
 /* 404.php page end */
 
-/* account.php , cancel.php , cart.php , forget.php search_result.php page start */
+/* account.php , cancel.php , cart.php , forget.php search_result.php orderhistory.php page start */
 
 .account-page,
 .cancel-page,
 .cart-page,
 .forget-page,
-.no-search-found {
+.no-search-found,
+.orderhistory-page {
     min-height: 50vh !important;
 }
 
-/* account.php , cancel.php , cart.php , forget.php search_result.php page end */
+/* account.php , cancel.php , cart.php , forget.php search_result.php orderhistory.php page end */
 
 /* cart.php page start */
 
@@ -186,3 +178,48 @@ html {
 }
 
 /* orderhistory.php page end */
+
+/* header.php start  */
+
+.search-page {
+    position: relative !important;
+}
+
+#display {
+    position: absolute !important;
+    top: 38px !important;
+    width: 100% !important;
+    left: 0 !important;
+}
+
+/* header.php end  */
+
+/* pwa update message start */
+
+#snackbar {
+    display: none;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    bottom: 30px;
+}
+
+#snackbar.show {
+    display: block;
+}
+
+#snackbar p {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+}
+
+#reload {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* pwa update message end */

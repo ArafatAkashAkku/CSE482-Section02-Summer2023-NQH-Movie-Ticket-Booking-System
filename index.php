@@ -6,8 +6,8 @@ session_start();
 if (isset($_POST['submit'])) {
     $reviewname = $_SESSION['user_fullname'];
     $reviewmovie = $_POST['movie'];
-    $reviewtitle = $_POST['title'];
-    $reviewreview = $_POST['review'];
+    $reviewtitle = mysqli_real_escape_string($con, $_POST['title']);
+    $reviewreview = mysqli_real_escape_string($con, $_POST['review']);
 
     $queryy = "INSERT INTO `reviews`(`name`,`movie`,`title`,`review`,`time`,`verified`)VALUES('$reviewname','$reviewmovie','$reviewtitle','$reviewreview',current_timestamp(),'0')";
     $resultt = mysqli_query($con, $queryy);
@@ -88,7 +88,7 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- meta tag for seo purpose  -->
-    <base href="localhost/MTBS/">
+    <!-- <base href="localhost/MTBS/"> -->
     <meta name="description" content="MTBS is a user-friendly online platform dedicated to simplifying the process of purchasing movie tickets. With a wide array of cinema options, showtimes, and locations, MTBS offers moviegoers a convenient and efficient way to browse, select, and secure tickets for their favorite films. Whether you're planning a solo movie night or a group outing, MTBS provides a seamless experience, making it easy to book your tickets and enjoy the latest blockbuster or indie flick hassle-free. Say goodbye to long queues and hello to a hassle-free moviegoing experience with MTBS.">
     <meta name="keywords" content="Movie Tickets, Online Booking, Showtimes, Cinema Tickets, Film Reservations, Movie Screening, Theater Tickets, Box Office, Movie Seats, Ticket Prices, Movie Theaters, Moviegoers, Ticket Availability, Movie Showings, Movie Night Out, Movie Premieres, Film Releases, Seat Selection, Movie Buffs, Entertainment Events">
     <meta name="robots" content="index, follow">
@@ -102,6 +102,8 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
     <link rel="shortcut icon" href="images/logo/favicon.ico" type="image/x-icon">
+    <!-- manifest link  -->
+    <link rel="manifest" href="manifest.webmanifest">
     <!-- website title  -->
     <title>MTBS</title>
 </head>
@@ -194,37 +196,47 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                     <div class="swiper-wrapper mb-5">
                         <?php
                         $ret = mysqli_query($con, "select * from reviews where verified='1' order by `id` desc");
-                        while ($row = mysqli_fetch_array($ret)) {
+                        if (mysqli_num_rows($ret) > 0) {
+                            while ($row = mysqli_fetch_array($ret)) {
                         ?>
-                            <div class="swiper-slide review-bg px-3 text-start border border-success">
-                                <?php
-                                $queryy = "select * from all_movie_info";
-                                $rett = mysqli_query($con, $queryy);
-                                while ($roww = mysqli_fetch_array($rett)) {
-                                    if ($row['movie'] === $roww['id']) {
-                                ?>
-                                        <div class="d-flex align-items-center">
-                                            <img width="100" height="100" class="error-img rounded-circle me-4" src="images/shows/<?php echo htmlentities($roww['id']); ?>/<?php echo htmlentities($roww['movie_image']); ?>" alt="<?php echo htmlentities($roww["name"]); ?>">
-                                            <h4 class="text-muted"><?php echo htmlentities($roww["name"]); ?></h4>
-                                        </div>
-                                <?php
+                                <div class="swiper-slide review-bg px-3 text-start border border-success">
+                                    <?php
+                                    $queryy = "select * from all_movie_info";
+                                    $rett = mysqli_query($con, $queryy);
+                                    while ($roww = mysqli_fetch_array($rett)) {
+                                        if ($row['movie'] === $roww['id']) {
+                                    ?>
+                                            <div class="d-flex align-items-center">
+                                                <img width="100" height="100" class="error-img rounded-circle me-4" src="images/shows/<?php echo htmlentities($roww['id']); ?>/<?php echo htmlentities($roww['movie_image']); ?>" alt="<?php echo htmlentities($roww["name"]); ?>">
+                                                <h4 class="text-muted"><?php echo htmlentities($roww["name"]); ?></h4>
+                                            </div>
+                                    <?php
+                                        }
                                     }
-                                }
-                                ?>
-                                <h3 class="shows-name fw-bolder"><?php echo htmlentities(substr($row["title"], 0, 40)) . "........"; ?></h3>
-                                <p><?php echo htmlentities(substr($row["review"], 0, 300)) . "........"; ?></p>
-                                <div class="d-flex justify-content-end align-items-center my-3">
-                                    <div>
-                                        <a href="movie_review?id=<?php echo htmlentities($row['id']); ?>">Read More...</a>
+                                    ?>
+                                    <h3 class="shows-name fw-bolder"><?php echo htmlentities(substr($row["title"], 0, 40)) . "........"; ?></h3>
+                                    <p><?php echo htmlentities(substr($row["review"], 0, 300)) . "........"; ?></p>
+                                    <div class="d-flex justify-content-end align-items-center my-3">
+                                        <div>
+                                            <a href="movie_review?id=<?php echo htmlentities($row['id']); ?>">Read More...</a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fa-solid fa-user text-success border rounded-circle bg-white p-1"></i><span class="ms-2"><?php echo htmlentities($row['name']); ?></span>
+                                        </div>
+                                        <div>
+                                            <p><?php echo htmlentities($row['time']); ?></p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fa-solid fa-user text-success border rounded-circle bg-white p-1"></i><span class="ms-2"><?php echo htmlentities($row['name']); ?></span>
-                                    </div>
-                                    <div>
-                                        <p><?php echo htmlentities($row['time']); ?></p>
-                                    </div>
+                            <?php
+                            }
+                        } else {
+                            ?>
+                            <div class="col-12 mt-3 text-center no-search-found">
+                                <div class="border border-warning p-2">
+                                    <h5><?php echo "No Reviews Found"; ?></h5>
                                 </div>
                             </div>
                         <?php
@@ -334,20 +346,21 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         <?php
         }
         ?>
-
         <!-- honest review section end  -->
-
     </main>
     <!-- main end  -->
-
-
-
 
     <!-- footer start  -->
     <?php include("includes/footer.php") ?>
     <!-- footer end  -->
 
-
+    <!-- pwa update message start  -->
+    <section>
+        <div id="snackbar">
+            <p><a id="reload">A new version of this app is available. Click here to update.</a></p>
+        </div>
+    </section>
+    <!-- pwa update message end  -->
 
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -359,69 +372,66 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- internal script link -->
     <script>
-        // swipper for top banner 
-        const slideshowswiper = new Swiper(".top-banner", {
-            spaceBetween: 10,
-            centeredSlides: true,
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            }
-        });
-        // swipper for all shows 
-        const allshows = new Swiper('.all-shows', {
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: false,
-            },
-            breakpoints: {
-                50: {
-                    slidesPerView: 1,
-                    spaceBetween: 25,
-                },
-                700: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                },
-                1011: {
-                    slidesPerView: 3,
-                    spaceBetween: 20,
-                },
-                1339: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
+        localStorage.setItem("mtbs", "movie ticket booking system");
+    </script>
+    <script>
+        // pwa installation updation 
+        // https://codyanhorn.tech/blog/pwa-reload-page-on-application-update
+        // every update requires the changes in cache name in sw.js file 
+        (function() {
+            // Track an updated flag and an activated flag.
+            // When both of these are flagged true the service worker was updated and activated.
+            let updated = false;
+            let activated = false;
+            navigator.serviceWorker.register('/MTBS/sw.js').then(regitration => {
+                regitration.addEventListener("updatefound", () => {
+                    const worker = regitration.installing;
+                    worker.addEventListener('statechange', () => {
+                        if (worker.state === "activated") {
+                            // Here is when the activated state was triggered from the lifecycle of the service worker.
+                            // This will trigger on the first install and any updates.
+                            activated = true;
+                            checkUpdate();
+                        }
+                    });
+                });
+            });
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                // This will be triggered when the service worker is replaced with a new one.
+                // It does not just reload the page right away, so to make sure it is fully activated using the checkUpdate function.
+                updated = true;
+                checkUpdate();
+            });
+
+            function checkUpdate() {
+                let snackbar = document.getElementById('snackbar');
+                if (activated && updated) {
+                    snackbar.classList.add('show');
+                    document.getElementById('reload').addEventListener('click', function() {
+                        window.location.reload();
+                    });
                 }
             }
-        });
-        // swipper for reviews
-        const allreviewswiper = new Swiper('.slider-for-review', {
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            breakpoints: {
-                50: {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                },
-                700: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                }
+        })();
+    </script>
+
+    <script>
+        if ("Notification" in window) {
+            if (Notification.permission === "granted") {
+                notify();
+            } else {
+                Notification.requestPermission().then(res => {
+                    if (res === "granted") {
+                        console.error("Notofication Allowed");
+                    } else {
+                        console.error("Did not receive permission for notifications");
+                    }
+                })
             }
-        });
+        } else {
+            console.error("Browser does not support notifications");
+        }
     </script>
 </body>
 

@@ -10,14 +10,14 @@ if (isset($_GET['id'])) {
         echo "
             <script>
             alert('Data updated');
-           window.location.href='review_info_view.php?id=$id';
+            window.location.href='review_info_view?id=$id';
             </script>
             ";
         }else{
             echo "
             <script>
             alert('Data not updated');
-           window.location.href='review_info_view.php?id=$id';
+            window.location.href='review_info_view?id=$id';
             </script>
             ";
         }

@@ -44,10 +44,10 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
         } else {
             $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
             echo "
-        <script>
-        alert('Ticket is added to your cart!');
-        </script>
-        ";
+            <script>
+            alert('Ticket is added to your cart!');
+            </script>
+            ";
         }
     }
 }

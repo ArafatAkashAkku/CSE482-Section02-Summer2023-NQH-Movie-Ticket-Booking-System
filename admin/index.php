@@ -10,37 +10,36 @@ if (isset($_POST['submit'])) {
         if (mysqli_num_rows($result) > 0) {
             $result_fetch = mysqli_fetch_assoc($result);
             if ($result_fetch['verified'] == 1) {
-                if($result_fetch['password'] === $_POST['password']){
+                if ($result_fetch['password'] === $_POST['password']) {
                     $_SESSION['admin_logged_in'] = true;
                     $_SESSION['email'] = $result_fetch['email'];
                     $_SESSION['id'] = $result_fetch['id'];
                     $_SESSION['fullname'] = $result_fetch['fullname'];
-                    setcookie("adminemail",$result_fetch['email'],time()+(86400*30),"/");
-                    header("location:admin_dashboard.php?email=$_SESSION[email]&id=$_SESSION[id]");
+                    setcookie("adminemail", $result_fetch['email'], time() + (86400 * 30), "/");
+                    header("location:admin_dashboard?email=$_SESSION[email]&id=$_SESSION[id]");
                 } else {
                     echo "
                     <script>
                     alert('Password not matched');
-                    window.location.href='index.php';
+                    window.location.href='index';
                     </script>
                     ";
                 }
-
             } else {
                 echo "
                 <script>
                 alert('Email not verified');
-                window.location.href='index.php';
+                window.location.href='index';
                 </script>
                 ";
             }
         } else {
             echo "
-        <script>
-        alert('Email not registered');
-        window.location.href='index.php';
-        </script>
-        ";
+            <script>
+            alert('Email not registered');
+            window.location.href='index';
+            </script>
+            ";
         }
     } else {
         echo "
@@ -65,8 +64,6 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="externals/css/style.css">
     <!-- bootstrap css link  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -80,14 +77,16 @@ if (isset($_POST['submit'])) {
     <?php include("includes/header.php") ?>
     <!-- header end  -->
     <!-- main start  -->
-    <main>
-        <div class="d-flex flex-column align-items-center justify-content-center p-5 bg-secondary">
-            <div class="bg-light p-3 res-width">
-                <h2 class="text-muted text-center pt-2">Enter your login details</h2>
-                <form class="p-3" action="" method="POST" autocomplete="off">
+    <main class="bg-light">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <div class="bg-light p-3 border border-warning shadow-lg p-3 mb-5 bg-body-warning rounded">
+                <h2 class="text-muted text-center pt-2">Enter your MTBS admin login details</h2>
+                <form class="p-3" action="index" method="POST" autocomplete="off">
                     <div class="form-group py-2">
                         <div class="input-field">
-                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2" value="<?php if(isset($_COOKIE['adminemail'])){ echo $_COOKIE['adminemail']; }  ?>">
+                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2" value="<?php if (isset($_COOKIE['adminemail'])) {
+                                                                                                                                                echo $_COOKIE['adminemail'];
+                                                                                                                                            }  ?>">
                         </div>
                     </div>
                     <div class="form-group py-2">
@@ -117,8 +116,6 @@ if (isset($_POST['submit'])) {
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- internal script link  -->
     <script>
         function myFunction() {

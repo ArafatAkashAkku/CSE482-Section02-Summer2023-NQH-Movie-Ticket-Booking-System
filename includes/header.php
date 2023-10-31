@@ -4,7 +4,7 @@
         z-index: 1000;
     }
 </style>
-<header style="position: relative;">
+<header>
     <nav class="navbar navbar-expand-lg bg-dark navigation-header">
         <div class="container-fluid">
             <a class="navbar-brand text-warning" href="index">MTBS</a>
@@ -71,16 +71,15 @@
                     }
                     ?>
                 </ul>
-                <form class="d-flex flex-column" role="search" action="search_result" method="GET" autocomplete="off">
+                <form class="d-flex flex-column search-page" role="search" action="search_result" method="GET" autocomplete="off">
                     <div class="d-flex">
                         <input type="text" id="search" name="search" required value="<?php if (isset($_GET['search'])) {
                                                                                 echo $_GET['search'];
                                                                             } ?>" class="form-control" placeholder="Search data">
                         <button class="btn btn-outline-warning text-light" type="submit">Search</button>
                     </div>
-                    <div class="bg-light" id="display" style="position: absolute;top: 48px;width: 21vw;right: 6px;"></div>
+                    <div class="bg-light" id="display"></div>
                 </form>
-                <!-- Suggestions will be displayed in the following div. -->
             </div>
         </div>
     </nav>

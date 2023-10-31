@@ -14,8 +14,6 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -30,7 +28,7 @@ session_start();
 
 </head>
 
-<body class="overflow-x-hidden">
+<body>
     <?php
     if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
     ?>
@@ -39,8 +37,8 @@ session_start();
         <!-- header end  -->
 
         <!-- main start  -->
-        <main class="mx-4 my-3 overflow-scroll">
-            <table id="example" class="table table-striped" style="width:100%">
+        <main class="mx-4 mb-3 pt-2 overflow-scroll movie-page">
+            <table id="example" class="table table-striped movie-table">
                 <thead>
                     <tr>
                         <th scope="col">Serial</th>
@@ -65,7 +63,7 @@ session_start();
                         <tr>
                             <th scope="row"><?php echo $serial ?> </th>
                             <td><img style="width
-                            50px; height:50px" src="../images/shows//<?php echo htmlentities($row["id"]); ?>/<?php echo htmlentities($row["movie_image"]); ?>" alt="Movie"></td>
+                            50px; height:50px" src="../images/shows//<?php echo htmlentities($row["id"]); ?>/<?php echo htmlentities($row["movie_image"]); ?>" alt="<?php echo htmlentities($row["name"]); ?>"></td>
                             <td style="display: none;"><?php
                                                         echo htmlentities($row["id"]);
                                                         ?> </td>
@@ -87,9 +85,9 @@ session_start();
                             <td><?php
                                 echo htmlentities($row["visibility"]);
                                 ?> </td>
-                            <td><a href="movie_info_edit.php?id=<?php
+                            <td><a href="movie_info_edit?id=<?php
                                                                 echo htmlentities($row['id']);
-                                                                ?>" class="pe-1">Edit</a><a href="movie_info_delete.php?id=<?php
+                                                                ?>" class="pe-1">Edit</a><a href="movie_info_delete?id=<?php
                                                                                                                                 echo htmlentities($row['id']);
                                                                                                                                 ?>" onclick="return checkdelete()" class="ps-1">Delete</a></td>
                         </tr>
@@ -120,18 +118,18 @@ session_start();
         <!-- footer end  -->
     <?php
     } else {
-        echo "<script>
-                alert('You need to log in first');
-                window.location.href='index.php';
-                </script>";
+        echo "
+        <script>
+        alert('You need to log in first');
+        window.location.href='index';
+        </script>
+        ";
     }
     ?>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- jquery js  -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!-- datatables net  -->

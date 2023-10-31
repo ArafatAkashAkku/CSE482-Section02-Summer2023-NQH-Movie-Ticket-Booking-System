@@ -5,18 +5,18 @@
     }
 </style>
 <header>
-    <nav class="navbar navbar-expand-lg bg-success navigation-header">
+    <nav class="navbar navbar-expand-lg bg-dark navigation-header">
         <div class="container-fluid">
             <?php
             if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
             ?>
-                <a class="navbar-brand text-light" href="admin_dashboard.php?email=<?php
+                <a class="navbar-brand text-warning" href="admin_dashboard?email=<?php
                                                                                     echo $_SESSION['email'];
                                                                                     ?>&id=<?php echo $_SESSION['id']; ?>">MTBS</a>
             <?php
             } else {
             ?>
-                <a class="navbar-brand text-light" href="index.php">MTBS</a>
+                <a class="navbar-brand text-warning" href="../index">MTBS</a>
             <?php
             }
             ?>
@@ -29,40 +29,40 @@
                     if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="admin_dashboard.php?email=<?php
-                                                                                                                echo $_SESSION['email'];
-                                                                                                                ?>&id=<?php echo $_SESSION['id']; ?>">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['email']; ?></span></a>
+                            <a class="nav-link text-light" aria-current="page" href="admin_dashboard?email=<?php
+                                                                                                            echo $_SESSION['email'];
+                                                                                                            ?>&id=<?php echo $_SESSION['id']; ?>">Welcome&nbsp;<span class=text-warning><?php echo $_SESSION['email']; ?></span></a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Movie Details
                             </a>
                             <ul class="dropdown-menu bg-dark">
-                                <li> <a class="dropdown-item text-light bg-dark" href="movie_info.php">Movie Info</a></li>
-                                <li> <a class="dropdown-item text-light bg-dark" href="movie_info_add.php">Add Movie Info</a></li>
+                                <li> <a class="dropdown-item text-light bg-dark" href="movie_info">Movie Info</a></li>
+                                <li> <a class="dropdown-item text-light bg-dark" href="movie_info_add">Add Movie Info</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="cineplex_info.php">Cineplex</a>
+                            <a class="nav-link text-light" aria-current="page" href="cineplex_info">Cineplex</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="user_info.php">User</a>
+                            <a class="nav-link text-light" aria-current="page" href="user_info">User</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="review_info.php">Review</a>
+                            <a class="nav-link text-light" aria-current="page" href="review_info">Review</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" aria-current="page" href="order_info.php">Ticket Purchase</a>
+                            <a class="nav-link text-light" aria-current="page" href="order_info">Ticket Purchase</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Account Info
                             </a>
                             <ul class="dropdown-menu bg-dark">
-                                <li> <a class="dropdown-item text-light bg-dark" href="admin_dashboard.php?email=<?php
-                                                                                                                    echo $_SESSION['email'];
-                                                                                                                    ?>&id=<?php echo $_SESSION['id']; ?>">Change Password</a></li>
-                                <li> <a class="dropdown-item text-light bg-dark" href="logout.php">Log out</a></li>
+                                <li> <a class="dropdown-item text-light bg-dark" href="admin_dashboard?email=<?php
+                                                                                                                echo $_SESSION['email'];
+                                                                                                                ?>&id=<?php echo $_SESSION['id']; ?>">Change Password</a></li>
+                                <li> <a class="dropdown-item text-light bg-dark" href="logout">Log out</a></li>
                             </ul>
                         </li>
                     <?php

@@ -41,7 +41,8 @@ function sendMail($email, $reset_token)
 }
 
 if (isset($_POST['submit'])) {
-    $query = " SELECT * FROM `user_info` WHERE `email`='$_POST[email]'";
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $query = " SELECT * FROM `user_info` WHERE `email`='$email'";
     $result = mysqli_query($con, $query);
     if ($result) {
         if (mysqli_num_rows($result) == 1) {
@@ -110,14 +111,16 @@ if (isset($_POST['submit'])) {
     <?php include("includes/header.php") ?>
     <!-- header end  -->
     <!-- main start  -->
-    <main class="forget-page bg-warning">
-        <div class="d-flex flex-column align-items-center justify-content-center p-5">
-            <div class="bg-light p-3 res-width">
+    <main class="forget-page bg-light">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <div class="bg-light p-3 border border-warning shadow-lg p-3 mb-5 bg-body-warning rounded">
                 <h2 class="text-muted text-center pt-2">Enter your MTBS email address</h2>
                 <form class="p-3" action="forgetpassword" method="POST" autocomplete="off">
                     <div class="form-group py-2">
                         <div class="input-field">
-                            <input type="email" name="email" placeholder="Enter your Email" required class="form-control px-3 py-2">
+                            <input type="email" name="email" value="<?php if (isset($_COOKIE['useremail'])) {
+                                                                        echo $_COOKIE['useremail'];
+                                                                    }  ?>" placeholder="Enter your Email" required class="form-control px-3 py-2">
                         </div>
                     </div>
                     <button class="btn btn-width btn-outline-warning text-dark" name="submit" type="submit">Send Reset Link</button>

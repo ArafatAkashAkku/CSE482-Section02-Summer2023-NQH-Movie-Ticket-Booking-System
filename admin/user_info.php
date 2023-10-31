@@ -16,8 +16,6 @@ session_start();
     <link rel="stylesheet" href="externals/css/style.css">
     <!-- bootstrap css link  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -31,7 +29,7 @@ session_start();
 
 </head>
 
-<body class="overflow-x-hidden">
+<body>
     <?php
     if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
     ?>
@@ -40,14 +38,23 @@ session_start();
         <!-- header end  -->
 
         <!-- main start  -->
-        <main class="mx-4 my-3 overflow-scroll">
-            <table id="example" class="table table-striped" style="width:100%">
+        <main class="mx-4 my-3 overflow-scroll user-page">
+            <table id="example" class="table table-striped user-table">
                 <thead>
                     <tr>
                         <th scope="col">Serial</th>
                         <th scope="col" style="display: none;">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Blood Group</th>
+                        <th scope="col">DOB</th>
+                        <th scope="col">Religion</th>
+                        <th scope="col">Occupation</th>
+                        <th scope="col">Nationality</th>
+                        <th scope="col">Marital STatus</th>
+                        <th scope="col">Address</th>
                         <th scope="col">Verified</th>
                     </tr>
                 </thead>
@@ -69,12 +76,40 @@ session_start();
                             <td><?php
                                 echo htmlentities($row["email"]);
                                 ?> </td>
+
                             <td><?php
-                            if($row["verified"]==1){
-                                echo "Yes";
-                            }else{
-                                echo "No";
-                            }?></td>
+                                echo $row['phone'];
+                                ?></td>
+                            <td><?php
+                                echo $row['gender'];
+                                ?></td>
+                            <td><?php
+                                echo $row['blood'];
+                                ?></td>
+                            <td><?php
+                                echo $row['dob'];
+                                ?></td>
+                            <td><?php
+                                echo $row['religion'];
+                                ?></td>
+                            <td><?php
+                                echo $row['occupation'];
+                                ?></td>
+                            <td><?php
+                                echo $row['nationality'];
+                                ?></td>
+                            <td><?php
+                                echo $row['maritalstatus'];
+                                ?></td>
+                            <td><?php
+                                echo $row['address'];
+                                ?></td>
+                            <td><?php
+                                if ($row["verified"] == 1) {
+                                    echo "Yes";
+                                } else {
+                                    echo "No";
+                                } ?></td>
                         </tr>
                     <?php
                     }
@@ -82,10 +117,19 @@ session_start();
                 </tbody>
                 <tfoot>
                     <tr>
-                    <th scope="col">Serial</th>
+                        <th scope="col">Serial</th>
                         <th scope="col" style="display: none;">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Blood Group</th>
+                        <th scope="col">DOB</th>
+                        <th scope="col">Religion</th>
+                        <th scope="col">Occupation</th>
+                        <th scope="col">Nationality</th>
+                        <th scope="col">Marital STatus</th>
+                        <th scope="col">Address</th>
                         <th scope="col">Verified</th>
                     </tr>
                 </tfoot>
@@ -98,10 +142,12 @@ session_start();
         <!-- footer end  -->
     <?php
     } else {
-        echo "<script>
-                alert('You need to log in first');
-                window.location.href='index.php';
-                </script>";
+        echo "
+        <script>
+        alert('You need to log in first');
+        window.location.href='index';
+        </script>
+        ";
     }
     ?>
 
@@ -109,8 +155,6 @@ session_start();
     <script type="text/javascript" src="externals/js/script.js"></script>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- datatables net  -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>

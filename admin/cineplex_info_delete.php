@@ -10,14 +10,14 @@ if (isset($_GET['id'])) {
         echo "
             <script>
             alert('Data deleted');
-           window.location.href='cineplex_info.php';
+            window.location.href='cineplex_info';
             </script>
             ";
         }else{
             echo "
             <script>
             alert('Data not deleted');
-           window.location.href='cineplex_info.php';
+            window.location.href='cineplex_info';
             </script>
             ";
         }

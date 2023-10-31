@@ -95,8 +95,8 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                         <img src="images/shows/<?php
                                                 echo ($rowitems['id']);
                                                 ?>/<?php
-                                                echo ($rowitems['movie_image']);
-                                                ?>" class="mb-3 bg-light error-img" width="100%" height="400" loading="lazy" alt="<?php
+                                                    echo ($rowitems['movie_image']);
+                                                    ?>" class="mb-3 bg-light error-img" width="100%" height="400" loading="lazy" alt="<?php
                                                                                                                                     echo ($rowitems["name"]);
                                                                                                                                     ?>">
                     </div>
@@ -141,17 +141,10 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
 
                     </div>
 
-                    <div class="col-12 text-center my-2">
-                        <h2>Watch Trailer</h2>
-                        <?php
-                        echo ($rowitems["trailer"]);
-                        ?>
-                    </div>
-
                     <div class="col-12 my-2">
                         <h2 class="text-center">About Movie</h2>
                         <p class="text-center"><?php
-                                                echo ($rowitems["about"]);
+                                                echo htmlentities($rowitems["about"]);
                                                 ?></p>
                     </div>
 
@@ -161,10 +154,17 @@ if (isset($_POST['item']) && $_POST['item'] != "") {
                             <div>
                                 <i class="fa-solid fa-user fs-3 text-success border rounded-circle bg-white p-3"></i>
                                 <p class="pt-2"><?php
-                                                echo ($rowitems["cast"]);
+                                                echo htmlentities($rowitems["cast"]);
                                                 ?></p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="col-12 text-center my-2">
+                        <h2>Watch Trailer</h2>
+                        <?php
+                        echo $rowitems["trailer"];
+                        ?>
                     </div>
 
                 <?php

@@ -26,7 +26,7 @@ session_start();
 
 </head>
 
-<body class="overflow-x-hidden">
+<body>
     <?php
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
     ?>
@@ -35,7 +35,7 @@ session_start();
         <!-- header end  -->
 
         <!-- main start  -->
-        <main class="mx-4 my-3 overflow-scroll">
+        <main class="mx-4 my-3 overflow-scroll orderhistory-page">
             <div class="d-flex justify-content-end">
                 <button class="btn btn-link text-decoration-none "><a class="text-decoration-none bg-warning text-dark px-3 py-1 border border-warning rounded" href="index#now-showing">Purchase Tickets</a></button>
             </div>

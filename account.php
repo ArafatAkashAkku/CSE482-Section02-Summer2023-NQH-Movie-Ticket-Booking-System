@@ -45,11 +45,34 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
                     $row = mysqli_fetch_array($ret);
                     if ($row) {
                     ?>
-                        <h2 class="text-muted text-center pt-2">Update Account Info Details</h2>
+                        <h2 class="text-muted text-center pt-2">Update MTBS Account Info Details</h2>
                         <form action="account?email=<?php
                                                     echo $_SESSION['user_email'];
                                                     ?>&id=<?php echo $_SESSION['user_id']; ?>" method="POST" autocomplete="off" enctype="multipart/form-data">
                             <div class="row gap-2 d-flex justify-content-center">
+
+                                <div class="col-12 text-center d-flex align-items-center justify-content-center">
+                                    <div class="form-group py-2">
+                                        <div class="input-field">
+                                            <?php
+                                            if ($row['image'] == '') {
+                                            ?>
+                                                <img src="images/default/user.jpg" width="150" height="150" class="border rounded-circle" alt="No Image" loading="lazy">
+                                                <h5 class="text-muted">Upload Profile Picture</h5>
+                                                <input type="file" name="upload" class="mt-2 border border-primary px-3 py-2">
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <img src="images/users/<?php echo htmlentities($row["id"]); ?>/<?php echo htmlentities($row["image"]); ?>" width="150" height="150" class="border rounded-circle" alt="<?php echo htmlentities($row["fullname"]); ?>" loading="lazy">
+                                                <h5 class="text-muted">Update Profile Picture?</h5>
+                                                <input type="file" name="update" class="mt-2 border border-primary px-3 py-2">
+                                            <?php
+                                            }
+
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-5 col-12">
                                     <div class="form-group py-2">
@@ -254,33 +277,159 @@ if (isset($_GET["email"]) & isset($_GET["id"])) {
 
     <?php
     if (isset($_POST['submit'])) {
+        $fullname = mysqli_real_escape_string($con, $_POST['fullname']);
+        $phone = mysqli_real_escape_string($con, $_POST['phone']);
+        $gender = mysqli_real_escape_string($con, $_POST['gender']);
+        $dob = mysqli_real_escape_string($con, $_POST['dob']);
+        $blood = mysqli_real_escape_string($con, $_POST['blood']);
+        $nationality = mysqli_real_escape_string($con, $_POST['nationality']);
+        $maritalstatus = mysqli_real_escape_string($con, $_POST['maritalstatus']);
+        $address = mysqli_real_escape_string($con, $_POST['address']);
+        $occupation = mysqli_real_escape_string($con, $_POST['occupation']);
+        $religion = mysqli_real_escape_string($con, $_POST['religion']);
+
         $user_exist_query = "SELECT * from `user_info` WHERE `email`='$email' and `id`='$id'";
         $result = mysqli_query($con, $user_exist_query);
-        // $password = password_hash($_POST['password'], PASSWORD_BCRYPT); `password`='$password',
+
         if ($result) {
             if (mysqli_num_rows($result) > 0) {
-                $query = "UPDATE `user_info` SET `fullname`='$_POST[fullname]' WHERE `email`='$email' and `id`='$id'";
-                if (mysqli_query($con, $query)) {
-                    echo "
-                    <script>
-                    alert('Account info updated - Please log in');
-                    window.location.href='logout';
-                    </script>
-                    ";
+
+                if ($_FILES["upload"]["name"] != "") {
+                    $file = $_FILES['upload'];
+                    $fileName = $_FILES['upload']['name'];
+                    $fileTmpName = $_FILES['upload']['tmp_name'];
+                    $fileSize = $_FILES['upload']['size'];
+                    $fileError = $_FILES['upload']['error'];
+                    $fileExtension = explode('.', $fileName);
+                    $fileActualExtension = strtolower(end($fileExtension));
+                    $allowed = array('jpg', 'jpeg', 'png');
+
+                    if (in_array($fileActualExtension, $allowed)) {
+                        if ($fileError == 0) {
+                            // 50000=50kb
+                            if ($fileSize < 10000000) {
+                                $fileNameNew = uniqid('', true) . "." . $fileActualExtension;
+                                $fileDestination = "images/users/$id/" . $fileNameNew;
+                                $dir = "images/users/$id";
+                                if (!is_dir($dir)) {
+                                    mkdir("images/users/" . $id);
+                                }
+                                move_uploaded_file($fileTmpName, $fileDestination);
+                                $query = "UPDATE `user_info` SET `fullname`='$fullname',`phone`='$phone',`gender`='$gender',`dob`='$dob',`blood`='$blood',`nationality`='$nationality',`maritalstatus`='$maritalstatus',`address`='$address',`occupation`='$occupation',`religion`='$religion',`image`='$fileNameNew' WHERE `email`='$email' and `id`='$id'";
+                                if (mysqli_query($con, $query)) {
+                                    echo "
+                                    <script>
+                                    window.location.href='logout';
+                                    alert('Account info updated - Please log in');
+                                    </script>
+                                    ";
+                                } else {
+                                    echo "
+                                    <script>
+                                    window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
+                                    alert('Server Down');
+                                    </script>
+                                    ";
+                                }
+                            } else {
+                                echo "
+                                <script>
+                                alert('Your file is too big');
+                                </script>
+                                ";
+                            }
+                        } else {
+                            echo "
+                            <script>
+                            alert('There was an error uploading your file');
+                            </script>
+                            ";
+                        }
+                    } else {
+                        echo "
+                        <script>
+                        alert('You cant upload a file here');
+                        </script>
+                        ";
+                    }
+                } elseif ($_FILES["update"]["name"] != "") {
+                    $file = $_FILES['update'];
+                    $fileName = $_FILES['update']['name'];
+                    $fileTmpName = $_FILES['update']['tmp_name'];
+                    $fileSize = $_FILES['update']['size'];
+                    $fileError = $_FILES['update']['error'];
+                    $fileExtension = explode('.', $fileName);
+                    $fileActualExtension = strtolower(end($fileExtension));
+                    $allowed = array('jpg', 'jpeg', 'png');
+
+                    if (in_array($fileActualExtension, $allowed)) {
+                        if ($fileError == 0) {
+                            // 50000=50kb
+                            if ($fileSize < 10000000) {
+                                $fileNameNew = uniqid('', true) . "." . $fileActualExtension;
+                                $fileDestination = "images/users/$id/" . $fileNameNew;
+                                move_uploaded_file($fileTmpName, $fileDestination);
+                                $query = "UPDATE `user_info` SET `fullname`='$fullname',`phone`='$phone',`gender`='$gender',`dob`='$dob',`blood`='$blood',`nationality`='$nationality',`maritalstatus`='$maritalstatus',`address`='$address',`occupation`='$occupation',`religion`='$religion',`image`='$fileNameNew' WHERE `email`='$email' and `id`='$id'";
+                                if (mysqli_query($con, $query)) {
+                                    echo "
+                                    <script>
+                                    window.location.href='logout';
+                                    alert('Account info updated - Please log in');
+                                    </script>
+                                    ";
+                                } else {
+                                    echo "
+                                    <script>
+                                    window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
+                                    alert('Server Down');
+                                    </script>
+                                    ";
+                                }
+                            } else {
+                                echo "
+                                <script>
+                                alert('Your file is too big');
+                                </script>
+                                ";
+                            }
+                        } else {
+                            echo "
+                            <script>
+                            alert('There was an error uploading your file');
+                            </script>
+                            ";
+                        }
+                    } else {
+                        echo "
+                        <script>
+                        alert('You cant upload a file here');
+                        </script>
+                        ";
+                    }
                 } else {
-                    echo "
-                    <script>
-                    alert('Server Down');
-                    window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
-                    </script>
-                    ";
+                    $query = "UPDATE `user_info` SET `fullname`='$fullname',`phone`='$phone',`gender`='$gender',`dob`='$dob',`blood`='$blood',`nationality`='$nationality',`maritalstatus`='$maritalstatus',`address`='$address',`occupation`='$occupation',`religion`='$religion' WHERE `email`='$email' and `id`='$id'";
+                    if (mysqli_query($con, $query)) {
+                        echo "
+                        <script>
+                        window.location.href='logout';
+                        alert('Account info updated - Please log in');
+                        </script>
+                        ";
+                    } else {
+                        echo "
+                        <script>
+                        window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
+                        alert('Server Down');
+                        </script>
+                        ";
+                    }
                 }
             }
         } else {
             echo "
             <script>
-            alert('Can not run query');
             window.location.href='account?email=$_SESSION[user_email]&id=$_SESSION[user_id]';
+            alert('Can not run query');
             </script>
             ";
         }

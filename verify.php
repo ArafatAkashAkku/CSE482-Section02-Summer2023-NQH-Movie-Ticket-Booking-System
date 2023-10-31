@@ -4,7 +4,8 @@ require_once 'config.php';
 include 'dbConnect.php';
 
 if (isset($_GET['email']) && isset($_GET['v_code'])) {
-    $query = "SELECT * from `user_info` WHERE `email`='$_GET[email]' AND `v_code`='$_GET[v_code]'";
+    $email = mysqli_real_escape_string($con,$_GET['email']);
+    $query = "SELECT * from `user_info` WHERE `email`='$email' AND `v_code`='$_GET[v_code]'";
     $result = mysqli_query($con, $query);
     if ($result) {
         if (mysqli_num_rows($result) == 1) {

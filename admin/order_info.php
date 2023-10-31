@@ -14,8 +14,6 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- external css link  -->
     <link rel="stylesheet" href="externals/css/style.css">
-    <!-- swipper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <!-- font awesome cdn 6.3.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <!-- favicon link  -->
@@ -30,7 +28,7 @@ session_start();
 
 </head>
 
-<body class="overflow-x-hidden">
+<body>
     <?php
     if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] == true) {
     ?>
@@ -39,8 +37,8 @@ session_start();
         <!-- header end  -->
 
         <!-- main start  -->
-        <main class="mx-4 my-3 overflow-scroll">
-            <table id="example" class="table table-striped" style="width:100%">
+        <main class="mx-4 my-3 overflow-scroll order-page">
+            <table id="example" class="table table-striped order-table">
                 <thead>
                     <tr>
                         <th scope="col">Serial</th>
@@ -108,18 +106,18 @@ session_start();
         <!-- footer end  -->
     <?php
     } else {
-        echo "<script>
-                alert('You need to log in first');
-                window.location.href='index.php';
-                </script>";
+        echo "
+        <script>
+        alert('You need to log in first');
+        window.location.href='index';
+        </script>
+        ";
     }
     ?>
     <!-- bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- external js link  -->
     <script type="text/javascript" src="externals/js/script.js"></script>
-    <!-- swipper js link  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <!-- jquery js  -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!-- datatables net  -->
