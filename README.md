@@ -8,9 +8,10 @@ To deploy this project run
 
 ```bash
   git clone https://github.com/ArafatAkashAkku/CSE482-Section02-Summer2023-NQH-Movie-Ticket-Booking-System.git
-
+```
   or
-
+  
+```bash
   git clone https://github.com/ArafatAkashAkku/CSE482-Section02-Summer2023-NQH-Movie-Ticket-Booking-System.git MTBS
 ```
 
@@ -103,7 +104,8 @@ Live Website link: https://movieticketbookingsystem1.000webhostapp.com/
 Final Output Result on browser 
 
 For home page
+![User Page](https://github.com/ArafatAkashAkku/CSE482-Section02-Summer2023-NQH-Movie-Ticket-Booking-System/assets/114158075/1710e3b9-0c74-41ec-b120-595cdf3ce7bd)
 
 
 For admin page
-
+![Admin Page](https://github.com/ArafatAkashAkku/CSE482-Section02-Summer2023-NQH-Movie-Ticket-Booking-System/assets/114158075/5f4b4480-974b-4624-a66d-4e1cfb23de87)
